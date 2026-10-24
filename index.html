@@ -1,0 +1,2344 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>damnwu » Portfolio</title>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/318945136?v=4">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        /* ============================
+           CSS VARIABLES & DESIGN SYSTEM
+           ============================ */
+        :root {
+            --bg-deep: #06070a;
+            --bg-primary: #0a0c14;
+            --bg-secondary: #121422;
+            
+            --glass-base: rgba(18, 20, 36, 0.55);
+            --glass-card: rgba(22, 25, 45, 0.45);
+            --glass-hover: rgba(30, 35, 62, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-border-hover: rgba(147, 51, 234, 0.35);
+            
+            --primary: #8b5cf6;
+            --primary-glow: rgba(139, 92, 246, 0.35);
+            --secondary: #06b6d4;
+            --secondary-glow: rgba(6, 182, 212, 0.35);
+            --accent: #ec4899;
+            --steam-blue: #66c0f4;
+            --steam-dark: #171a21;
+            --discord: #5865F2;
+            --telegram: #229ED9;
+            --online: #22c55e;
+            
+            --text-main: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            
+            --font-display: 'Cabinet Grotesk', -apple-system, sans-serif;
+            --font-body: 'Inter', -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ============================
+           RESET & GLOBALS
+           ============================ */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) var(--bg-deep);
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-deep);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            selection-background-color: var(--primary);
+            selection-color: #fff;
+        }
+
+        ::selection {
+            background: rgba(139, 92, 246, 0.35);
+            color: #fff;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-deep); }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            border-radius: 4px;
+        }
+
+        /* ============================
+           DYNAMIC BACKGROUND CANVAS
+           ============================ */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .ambient-glow {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(140px);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.18;
+            animation: orbFloat 22s ease-in-out infinite alternate;
+        }
+
+        .ambient-1 {
+            width: 650px;
+            height: 650px;
+            background: radial-gradient(circle, var(--primary), transparent 70%);
+            top: -200px;
+            right: -150px;
+        }
+
+        .ambient-2 {
+            width: 550px;
+            height: 550px;
+            background: radial-gradient(circle, var(--secondary), transparent 70%);
+            bottom: -100px;
+            left: -150px;
+            animation-duration: 28s;
+            animation-delay: -7s;
+        }
+
+        .ambient-3 {
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, var(--accent), transparent 70%);
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-duration: 25s;
+            animation-delay: -14s;
+        }
+
+        @keyframes orbFloat {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(60px, 80px) scale(1.1); }
+            100% { transform: translate(-50px, 40px) scale(0.92); }
+        }
+
+        /* ============================
+           CUSTOM CURSOR
+           ============================ */
+        .cursor-dot, .cursor-ring {
+            position: fixed;
+            top: 0;
+            left: 0;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 99999;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s ease;
+        }
+
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            box-shadow: 0 0 10px #fff;
+        }
+
+        .cursor-ring {
+            width: 36px;
+            height: 36px;
+            border: 1.5px solid rgba(139, 92, 246, 0.6);
+            transition: width 0.25s var(--ease-out-expo),
+                        height 0.25s var(--ease-out-expo),
+                        border-color 0.25s,
+                        background 0.25s,
+                        transform 0.08s linear;
+        }
+
+        .cursor-ring.hover {
+            width: 58px;
+            height: 58px;
+            border-color: var(--secondary);
+            background: rgba(6, 182, 212, 0.08);
+        }
+
+        /* ============================
+           GLASSMORPHISM CARD STYLES
+           ============================ */
+        .glass-card {
+            background: var(--glass-card);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            transition: all 0.35s var(--ease-out-expo);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            transition: left 0.7s ease;
+            pointer-events: none;
+        }
+
+        .glass-card:hover::before {
+            left: 100%;
+        }
+
+        .glass-card:hover {
+            background: var(--glass-hover);
+            border-color: var(--glass-border-hover);
+            transform: translateY(-5px);
+            box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.5), 0 0 28px -5px var(--primary-glow);
+        }
+
+        /* ============================
+           NAVIGATION BAR
+           ============================ */
+        .navbar {
+            position: fixed;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 48px);
+            max-width: 1180px;
+            z-index: 1000;
+            background: rgba(10, 12, 20, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            top: 8px;
+            padding: 10px 20px;
+            background: rgba(10, 12, 20, 0.9);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            border-color: rgba(139, 92, 246, 0.2);
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #fff;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 1.15rem;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-brand .symbol {
+            color: var(--primary);
+            text-shadow: 0 0 12px var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.25s ease;
+            position: relative;
+            padding: 4px 0;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #fff;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.25s ease;
+            border-radius: 2px;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-size: 0.95rem;
+        }
+
+        .btn-icon:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn-icon.active {
+            color: var(--primary);
+            border-color: var(--primary);
+            box-shadow: 0 0 14px var(--primary-glow);
+        }
+
+        .menu-toggle {
+            display: none;
+        }
+
+        /* ============================
+           HERO SECTION
+           ============================ */
+        .hero-section {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 140px 24px 80px;
+        }
+
+        .hero-inner {
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Avatar Container with glowing aura */
+        .avatar-stage {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            margin-bottom: 28px;
+        }
+
+        .avatar-aura {
+            position: absolute;
+            inset: -12px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, var(--primary), var(--secondary), var(--accent), var(--primary));
+            filter: blur(20px);
+            opacity: 0.45;
+            animation: rotateAura 8s linear infinite;
+        }
+
+        @keyframes rotateAura {
+            to { transform: rotate(360deg); }
+        }
+
+        .avatar-img-wrap {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            padding: 4px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.02));
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .status-badge {
+            position: absolute;
+            bottom: 6px;
+            right: 6px;
+            background: #10121e;
+            border: 2px solid var(--online);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+        }
+
+        .status-pulse {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--online);
+            box-shadow: 0 0 10px var(--online);
+            animation: pulseDot 2s infinite;
+        }
+
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.3); }
+        }
+
+        /* Pill Badge */
+        .hero-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 18px;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.25);
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #d8b4fe;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-pill i {
+            color: var(--primary);
+        }
+
+        /* Main Headline */
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.8rem, 7vw, 5.2rem);
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: 16px;
+            color: #fff;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #fff 20%, #c084fc 60%, #38bdf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+        }
+
+        /* Typewriter Subtitle */
+        .hero-subtitle {
+            font-family: var(--font-mono);
+            font-size: clamp(1.05rem, 2.5vw, 1.45rem);
+            color: var(--text-secondary);
+            margin-bottom: 36px;
+            min-height: 2.2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .typewriter-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 1.25em;
+            background: var(--secondary);
+            margin-left: 2px;
+            animation: blinkCursor 0.9s infinite;
+            border-radius: 1px;
+        }
+
+        @keyframes blinkCursor {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Hero Action Buttons */
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 13px 28px;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: all 0.3s var(--ease-out-expo);
+            position: relative;
+            cursor: pointer;
+            border: none;
+            outline: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #6366f1);
+            color: #fff;
+            box-shadow: 0 8px 24px -4px var(--primary-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 30px -2px var(--primary-glow);
+        }
+
+        .btn-glass {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(12px);
+        }
+
+        .btn-glass:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        /* Social Hub Grid in Hero */
+        .social-pill-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .social-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 10px 20px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            background: var(--glass-card);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(12px);
+            transition: all 0.3s var(--ease-out-expo);
+        }
+
+        .social-pill:hover {
+            color: #fff;
+            transform: translateY(-3px);
+        }
+
+        .social-pill.gh:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .social-pill.stm:hover {
+            border-color: var(--steam-blue);
+            color: var(--steam-blue);
+            box-shadow: 0 8px 20px rgba(102, 192, 244, 0.25);
+        }
+
+        .social-pill.dc:hover {
+            border-color: var(--discord);
+            color: #7983f5;
+            box-shadow: 0 8px 20px rgba(88, 101, 242, 0.25);
+        }
+
+        .social-pill.tg:hover {
+            border-color: var(--telegram);
+            color: #5ec7f8;
+            box-shadow: 0 8px 20px rgba(34, 158, 217, 0.25);
+        }
+
+        /* ============================
+           SECTIONS LAYOUT
+           ============================ */
+        .section {
+            position: relative;
+            z-index: 1;
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 110px 24px;
+        }
+
+        .section-header {
+            margin-bottom: 50px;
+            text-align: left;
+        }
+
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 12px;
+        }
+
+        .section-tag::before {
+            content: '//';
+            color: var(--primary);
+        }
+
+        .section-heading {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+        }
+
+        .section-desc {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            margin-top: 10px;
+            max-width: 600px;
+        }
+
+        /* ============================
+           STEAM & GAMING SHOWCASE
+           ============================ */
+        .steam-hero-card {
+            padding: 36px;
+            background: linear-gradient(135deg, rgba(23, 26, 33, 0.85), rgba(34, 43, 62, 0.6));
+            border: 1px solid rgba(102, 192, 244, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .steam-hero-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+
+        .steam-profile-left {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        /* Custom Steam Avatar with Real Steam Frame */
+        .steam-frame-wrap {
+            position: relative;
+            width: 96px;
+            height: 96px;
+            flex-shrink: 0;
+        }
+
+        .steam-base-avatar {
+            width: 76px;
+            height: 76px;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            border-radius: 4px;
+            object-fit: cover;
+        }
+
+        .steam-animated-frame {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .steam-level-circle {
+            position: absolute;
+            bottom: -6px;
+            right: -6px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #1b2838;
+            border: 2px solid var(--steam-blue);
+            color: var(--steam-blue);
+            font-weight: 800;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+        }
+
+        .steam-meta h3 {
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .steam-pos-badge {
+            font-size: 0.75rem;
+            font-family: var(--font-mono);
+            background: rgba(102, 192, 244, 0.15);
+            border: 1px solid rgba(102, 192, 244, 0.3);
+            color: var(--steam-blue);
+            padding: 3px 10px;
+            border-radius: 6px;
+        }
+
+        .steam-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 8px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .steam-details span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .steam-details i {
+            color: var(--steam-blue);
+        }
+
+        .steam-right-stats {
+            display: flex;
+            gap: 28px;
+        }
+
+        .steam-metric {
+            text-align: right;
+        }
+
+        .steam-metric .val {
+            font-family: var(--font-display);
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1;
+        }
+
+        .steam-metric .sub {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Game Cards Grid */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 22px;
+        }
+
+        .game-item-card {
+            padding: 24px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            background: rgba(18, 22, 38, 0.5);
+            border: 1px solid var(--glass-border);
+        }
+
+        .game-item-banner {
+            width: 100px;
+            height: 64px;
+            border-radius: 12px;
+            object-fit: cover;
+            flex-shrink: 0;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .game-item-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .game-item-title {
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: #fff;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .game-item-hours {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--secondary);
+            margin-bottom: 8px;
+        }
+
+        .game-progress-track {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .game-progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 1.6s var(--ease-out-expo);
+        }
+
+        .game-item-extra {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 6px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* ============================
+           DISCORD & TELEGRAM LIVE CARDS
+           ============================ */
+        .live-status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 24px;
+            margin-top: 30px;
+        }
+
+        /* Discord Card */
+        .discord-glass-card {
+            padding: 32px;
+            background: linear-gradient(135deg, rgba(88, 101, 242, 0.08), rgba(15, 18, 30, 0.6));
+            border: 1px solid rgba(88, 101, 242, 0.25);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .discord-card-top {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .discord-avatar-wrap {
+            position: relative;
+            width: 64px;
+            height: 64px;
+            flex-shrink: 0;
+        }
+
+        .discord-avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            background: rgba(88, 101, 242, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--discord);
+        }
+
+        .discord-user-info h4 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .discord-tag-pill {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: #a5b4fc;
+            background: rgba(88, 101, 242, 0.15);
+            padding: 4px 10px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 4px;
+        }
+
+        .discord-status-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 14px;
+            padding: 14px 18px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .discord-status-header {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .discord-status-content {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .discord-status-content i {
+            color: var(--primary);
+        }
+
+        /* Telegram Card */
+        .tg-glass-card {
+            padding: 32px;
+            background: linear-gradient(135deg, rgba(34, 158, 217, 0.08), rgba(15, 18, 30, 0.6));
+            border: 1px solid rgba(34, 158, 217, 0.25);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .tg-card-top {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .tg-avatar-img {
+            width: 64px;
+            height: 64px;
+            border-radius: 20px;
+            background: rgba(34, 158, 217, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--telegram);
+            flex-shrink: 0;
+        }
+
+        .tg-user-info h4 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .tg-tag-pill {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: #7dd3fc;
+            background: rgba(34, 158, 217, 0.15);
+            padding: 4px 10px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 4px;
+        }
+
+        /* ============================
+           TECH STACK & HARDWARE
+           ============================ */
+        .tech-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+
+        .tech-group-card {
+            padding: 28px;
+        }
+
+        .tech-group-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tech-group-title i {
+            color: var(--primary);
+        }
+
+        .tech-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tech-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 16px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--glass-border);
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all 0.25s var(--ease-out-expo);
+        }
+
+        .tech-pill:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.09);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .tech-pill i {
+            font-size: 1rem;
+        }
+
+        /* Specific colors */
+        .tech-pill.python:hover i { color: #3b82f6; }
+        .tech-pill.c:hover i { color: #94a3b8; }
+        .tech-pill.cpp:hover i { color: #60a5fa; }
+        .tech-pill.go:hover i { color: #38bdf8; }
+        .tech-pill.kotlin:hover i { color: #a855f7; }
+        .tech-pill.java:hover i { color: #f97316; }
+        .tech-pill.esp:hover i { color: #ef4444; }
+        .tech-pill.arduino:hover i { color: #14b8a6; }
+        .tech-pill.linux:hover i { color: #eab308; }
+        .tech-pill.git:hover i { color: #f43f5e; }
+
+        /* ============================
+           PROJECTS SHOWCASE
+           ============================ */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 24px;
+        }
+
+        .project-card {
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .project-card-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            font-family: var(--font-mono);
+            color: var(--secondary);
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.25);
+            padding: 3px 10px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            align-self: flex-start;
+        }
+
+        .project-title {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .project-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 22px;
+        }
+
+        .project-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: 18px;
+        }
+
+        .project-tags {
+            display: flex;
+            gap: 8px;
+        }
+
+        .project-tag {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .project-links {
+            display: flex;
+            gap: 12px;
+        }
+
+        .project-link-btn {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 1.05rem;
+            transition: all 0.2s;
+        }
+
+        .project-link-btn:hover {
+            color: #fff;
+            transform: scale(1.15);
+        }
+
+        /* ============================
+           INTERACTIVE TERMINAL MODAL
+           ============================ */
+        .terminal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 7, 12, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .terminal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .terminal-window {
+            width: 100%;
+            max-width: 680px;
+            background: #0d1117;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 16px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 40px var(--primary-glow);
+            overflow: hidden;
+            font-family: var(--font-mono);
+        }
+
+        .terminal-titlebar {
+            background: #161b22;
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .terminal-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .terminal-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .terminal-btn.close { background: #ff5f56; }
+        .terminal-btn.minimize { background: #ffbd2e; }
+        .terminal-btn.maximize { background: #27c93f; }
+
+        .terminal-title {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .terminal-body {
+            padding: 20px;
+            height: 340px;
+            overflow-y: auto;
+            color: #e6edf3;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        .terminal-input-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .terminal-prompt {
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        .terminal-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+        }
+
+        /* ============================
+           TOAST NOTIFICATION
+           ============================ */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(18, 22, 38, 0.95);
+            border: 1px solid var(--primary);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px var(--primary-glow);
+            color: #fff;
+            padding: 14px 24px;
+            border-radius: 14px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 99999;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.35s var(--ease-out-expo);
+            backdrop-filter: blur(16px);
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* ============================
+           FOOTER
+           ============================ */
+        .footer {
+            position: relative;
+            z-index: 1;
+            border-top: 1px solid var(--glass-border);
+            padding: 48px 24px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.88rem;
+        }
+
+        .footer-inner {
+            max-width: 1180px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .footer-heart {
+            color: var(--accent);
+            animation: pulseDot 1.4s infinite;
+            display: inline-block;
+        }
+
+        /* ============================
+           REVEAL ON SCROLL
+           ============================ */
+        .reveal-item {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
+        }
+
+        .reveal-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ============================
+           RESPONSIVE DESIGN
+           ============================ */
+        @media (max-width: 768px) {
+            .navbar {
+                width: calc(100% - 24px);
+                top: 12px;
+                padding: 12px 18px;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                margin-top: 12px;
+                background: rgba(10, 12, 20, 0.96);
+                border: 1px solid var(--glass-border);
+                border-radius: 16px;
+                padding: 20px;
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .nav-links.open {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .hero-section {
+                padding-top: 120px;
+            }
+
+            .steam-hero-inner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .steam-right-stats {
+                width: 100%;
+                justify-content: space-around;
+            }
+
+            .steam-metric {
+                text-align: center;
+            }
+
+            .cursor-dot, .cursor-ring {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Dynamic Cursor -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-ring" id="cursor-ring"></div>
+
+    <!-- Ambient Orbs & Canvas -->
+    <canvas id="bg-canvas"></canvas>
+    <div class="ambient-glow ambient-1"></div>
+    <div class="ambient-glow ambient-2"></div>
+    <div class="ambient-glow ambient-3"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <a href="#hero" class="nav-brand">
+            <span class="symbol">&lt;</span>damnwu<span class="symbol">/&gt;</span>
+        </a>
+        
+        <ul class="nav-links" id="nav-links">
+            <li><a href="#hero" class="active">Главная</a></li>
+            <li><a href="#steam">Steam & Игры</a></li>
+            <li><a href="#socials">Активность</a></li>
+            <li><a href="#skills">Стек & IoT</a></li>
+            <li><a href="#projects">Проекты</a></li>
+        </ul>
+
+        <div class="nav-actions">
+            <!-- Terminal Toggle Button -->
+            <button class="btn-icon" id="terminal-trigger" title="Открыть терминал (~)">
+                <i class="fas fa-terminal"></i>
+            </button>
+            <!-- Audio Synthesizer Toggle -->
+            <button class="btn-icon" id="audio-toggle" title="Звуковые эффекты">
+                <i class="fas fa-volume-up" id="audio-icon"></i>
+            </button>
+            <!-- Mobile Menu Toggle -->
+            <button class="btn-icon menu-toggle" id="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="hero">
+        <div class="hero-inner">
+            
+            <!-- Avatar with Steam/GitHub Aura -->
+            <div class="avatar-stage">
+                <div class="avatar-aura"></div>
+                <div class="avatar-img-wrap">
+                    <img src="https://avatars.githubusercontent.com/u/318945136?v=4" 
+                         alt="damnwu avatar" class="avatar-img">
+                </div>
+                <div class="status-badge" title="Активен">
+                    <div class="status-pulse"></div>
+                    <span>Online</span>
+                </div>
+            </div>
+
+            <!-- Pill Badge -->
+            <div class="hero-pill">
+                <i class="fas fa-bolt"></i>
+                <span>Python Developer · Embedded & IoT Explorer</span>
+            </div>
+
+            <!-- Title -->
+            <h1 class="hero-title">
+                Привет, я <span class="gradient-text">damnwu</span>
+            </h1>
+
+            <!-- Interactive Subtitle Typewriter -->
+            <div class="hero-subtitle">
+                <span id="typewriter-text"></span>
+                <span class="typewriter-cursor"></span>
+            </div>
+
+            <!-- Buttons -->
+            <div class="hero-buttons">
+                <a href="#socials" class="btn btn-primary" onclick="playSfx(580)">
+                    <i class="fas fa-paper-plane"></i> Связаться со мной
+                </a>
+                <a href="https://github.com/damnwu" target="_blank" class="btn btn-glass" onclick="playSfx(440)">
+                    <i class="fab fa-github"></i> Мой GitHub
+                </a>
+            </div>
+
+            <!-- Social Pill Buttons -->
+            <div class="social-pill-group">
+                <a href="https://steamcommunity.com/id/timurka_yo/" target="_blank" class="social-pill stm" onclick="playSfx(380)">
+                    <i class="fab fa-steam"></i> Steam
+                </a>
+                <a href="javascript:void(0)" onclick="copyDiscord(true); playSfx(480);" class="social-pill dc" title="Скопировать ник и открыть Discord">
+                    <i class="fab fa-discord"></i> timon_deg
+                </a>
+                <a href="https://t.me/damnwu0" target="_blank" class="social-pill tg" onclick="playSfx(520)">
+                    <i class="fab fa-telegram"></i> @damnwu0
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- STEAM & GAMING SECTION -->
+    <section class="section" id="steam">
+        <div class="section-header reveal-item">
+            <div class="section-tag">Steam Activity & Stats</div>
+            <h2 class="section-heading">Игровая активность</h2>
+            <p class="section-desc">Люблю соревновательный гейминг и стратегический расчет. Играю на позиции 2 (Mid).</p>
+        </div>
+
+        <!-- Steam Main Profile Glass Card -->
+        <div class="glass-card steam-hero-card reveal-item">
+            <div class="steam-hero-inner">
+                <div class="steam-profile-left">
+                    <!-- Real Steam Animated Frame applied here! -->
+                    <div class="steam-frame-wrap">
+                        <img src="https://avatars.fastly.steamstatic.com/e90dd12a994fde3d445972f4b824100348d5282a_full.jpg" 
+                             alt="Steam Avatar" class="steam-base-avatar">
+                        <img src="https://shared.fastly.steamstatic.com/community_assets/images/items/3923090/828f62af546f278d5f15f8567c55f2c55e88b100.png" 
+                             alt="Steam Frame" class="steam-animated-frame">
+                        <div class="steam-level-circle" title="Steam Уровень 5">5</div>
+                    </div>
+                    
+                    <div class="steam-meta">
+                        <h3>damnwu <span class="steam-pos-badge">» 2 pos</span></h3>
+                        <div class="steam-details">
+                            <span><i class="fas fa-gamepad"></i> 35 игр</span>
+                            <span><i class="fas fa-award"></i> 4 значка</span>
+                            <span><i class="fas fa-users"></i> MLP: CS2</span>
+                            <span><i class="fas fa-clock"></i> 23 ч за 2 нед.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="steam-right-stats">
+                    <div class="steam-metric">
+                        <div class="val" data-counter="520">0</div>
+                        <div class="sub">Часов в Dota 2</div>
+                    </div>
+                    <div class="steam-metric">
+                        <div class="val" data-counter="3">0</div>
+                        <div class="sub">Года выслуги</div>
+                    </div>
+                    <div class="steam-metric">
+                        <div class="val" data-counter="35">0</div>
+                        <div class="sub">Игр в библиотеке</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Games Grid -->
+        <div class="games-grid">
+            
+            <!-- Dota 2 -->
+            <div class="glass-card game-item-card reveal-item">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/570/header.jpg" 
+                     alt="Dota 2" class="game-item-banner">
+                <div class="game-item-content">
+                    <div class="game-item-title">Dota 2</div>
+                    <div class="game-item-hours">520 ч всего</div>
+                    <div class="game-progress-track">
+                        <div class="game-progress-fill" data-progress="100"></div>
+                    </div>
+                    <div class="game-item-extra">
+                        <span>Основная игра</span>
+                        <span>Midlane · Pos 2</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Counter-Strike 2 -->
+            <div class="glass-card game-item-card reveal-item">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/730/header.jpg" 
+                     alt="Counter-Strike 2" class="game-item-banner">
+                <div class="game-item-content">
+                    <div class="game-item-title">Counter-Strike 2</div>
+                    <div class="game-item-hours">43 ч всего</div>
+                    <div class="game-progress-track">
+                        <div class="game-progress-fill" data-progress="25"></div>
+                    </div>
+                    <div class="game-item-extra">
+                        <span>A New Beginning</span>
+                        <span>MLP: CS2 Group</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- R.E.P.O. -->
+            <div class="glass-card game-item-card reveal-item">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3241660/header.jpg" 
+                     alt="R.E.P.O." class="game-item-banner">
+                <div class="game-item-content">
+                    <div class="game-item-title">R.E.P.O.</div>
+                    <div class="game-item-hours">2.3 ч всего</div>
+                    <div class="game-progress-track">
+                        <div class="game-progress-fill" data-progress="10"></div>
+                    </div>
+                    <div class="game-item-extra">
+                        <span>Кооп выживание</span>
+                        <span>Свежий релиз</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- LIVE SOCIALS / DISCORD & TELEGRAM -->
+    <section class="section" id="socials">
+        <div class="section-header reveal-item">
+            <div class="section-tag">Communication & Presence</div>
+            <h2 class="section-heading">Связь и Онлайн</h2>
+            <p class="section-desc">Нажмите на карточку или тег, чтобы быстро скопировать контакт или начать чат.</p>
+        </div>
+
+        <div class="live-status-grid">
+            
+            <!-- Discord Card with 1-Click Copy & Direct App Link -->
+            <div class="glass-card discord-glass-card reveal-item" onclick="copyDiscord(true); playSfx(600);">
+                <div>
+                    <div class="discord-card-top">
+                        <div class="discord-avatar-wrap">
+                            <div class="discord-avatar-img">
+                                <i class="fab fa-discord"></i>
+                            </div>
+                        </div>
+                        <div class="discord-user-info">
+                            <h4>Discord Profile</h4>
+                            <span class="discord-tag-pill">timon_deg</span>
+                        </div>
+                    </div>
+
+                    <div class="discord-status-box">
+                        <div class="discord-status-header">Статус активности</div>
+                        <div class="discord-status-content">
+                            <i class="fas fa-circle" style="color: var(--online); font-size: 0.65rem;"></i>
+                            <span>Готов к общению и совместным проектам</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="btn btn-glass" style="flex: 1; min-width: 140px; justify-content: center;" onclick="event.stopPropagation(); copyDiscord(false); playSfx(600);">
+                        <i class="far fa-copy"></i> Скопировать ник
+                    </button>
+                    <a href="https://discord.com/channels/@me" target="_blank" class="btn btn-glass" style="flex: 1; min-width: 140px; justify-content: center; text-decoration: none;" onclick="event.stopPropagation(); copyDiscord(false); playSfx(600);">
+                        <i class="fab fa-discord"></i> Открыть Discord
+                    </a>
+                </div>
+            </div>
+
+            <!-- Telegram Card with Direct Chat -->
+            <div class="glass-card tg-glass-card reveal-item" onclick="window.open('https://t.me/damnwu0', '_blank'); playSfx(620);">
+                <div>
+                    <div class="tg-card-top">
+                        <div class="tg-avatar-img">
+                            <i class="fab fa-telegram-plane"></i>
+                        </div>
+                        <div class="tg-user-info">
+                            <h4>Telegram Messenger</h4>
+                            <span class="tg-tag-pill">@damnwu0</span>
+                        </div>
+                    </div>
+
+                    <div class="discord-status-box">
+                        <div class="discord-status-header">Канал & Связь</div>
+                        <div class="discord-status-content">
+                            <i class="fas fa-comment-dots"></i>
+                            <span>Самый быстрый способ связаться со мной</span>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="https://t.me/damnwu0" target="_blank" class="btn btn-glass" style="width: 100%; justify-content: center; text-decoration: none;" onclick="event.stopPropagation(); playSfx(620);">
+                    <i class="fab fa-telegram"></i> Написать в Telegram
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- TECH STACK & IOT -->
+    <section class="section" id="skills">
+        <div class="section-header reveal-item">
+            <div class="section-tag">Tech Stack & Hardware</div>
+            <h2 class="section-heading">Технологии и Стек</h2>
+            <p class="section-desc">От системного программирования на C/C++ до микроконтроллеров ESP32 и скриптов на Python.</p>
+        </div>
+
+        <div class="tech-categories">
+            
+            <!-- Языки программирования -->
+            <div class="glass-card tech-group-card reveal-item">
+                <div class="tech-group-title">
+                    <i class="fas fa-terminal"></i> Языки разработки
+                </div>
+                <div class="tech-pills">
+                    <div class="tech-pill python"><i class="fab fa-python"></i> Python</div>
+                    <div class="tech-pill c"><i class="fas fa-code"></i> C</div>
+                    <div class="tech-pill cpp"><i class="fas fa-code-branch"></i> C++</div>
+                    <div class="tech-pill go"><i class="fab fa-golang"></i> Go</div>
+                    <div class="tech-pill kotlin"><i class="fas fa-gem"></i> Kotlin</div>
+                    <div class="tech-pill java"><i class="fab fa-java"></i> Java</div>
+                    <div class="tech-pill"><i class="fas fa-database"></i> 1C:Enterprise</div>
+                </div>
+            </div>
+
+            <!-- Hardware & IoT -->
+            <div class="glass-card tech-group-card reveal-item">
+                <div class="tech-group-title">
+                    <i class="fas fa-microchip"></i> Hardware & Embedded
+                </div>
+                <div class="tech-pills">
+                    <div class="tech-pill esp"><i class="fas fa-wifi"></i> ESP32</div>
+                    <div class="tech-pill arduino"><i class="fas fa-bolt"></i> Arduino</div>
+                    <div class="tech-pill"><i class="fas fa-wave-square"></i> Прототипирование</div>
+                    <div class="tech-pill"><i class="fas fa-cogs"></i> Автоматизация</div>
+                    <div class="tech-pill"><i class="fas fa-satellite-dish"></i> IoT Sensors</div>
+                    <div class="tech-pill"><i class="fas fa-atom"></i> Физика & Схемотехника</div>
+                </div>
+            </div>
+
+            <!-- Окружение и Инструменты -->
+            <div class="glass-card tech-group-card reveal-item">
+                <div class="tech-group-title">
+                    <i class="fas fa-tools"></i> Среда и Инструменты
+                </div>
+                <div class="tech-pills">
+                    <div class="tech-pill linux"><i class="fab fa-linux"></i> Linux</div>
+                    <div class="tech-pill git"><i class="fab fa-git-alt"></i> Git & GitHub</div>
+                    <div class="tech-pill"><i class="fas fa-laptop-code"></i> JetBrains IDEs</div>
+                    <div class="tech-pill"><i class="fas fa-file-code"></i> VS Code</div>
+                    <div class="tech-pill"><i class="fas fa-network-wired"></i> Embedded Toolchains</div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- PROJECTS SECTION -->
+    <section class="section" id="projects">
+        <div class="section-header reveal-item">
+            <div class="section-tag">GitHub Live Repositories</div>
+            <h2 class="section-heading">Проекты</h2>
+            <p class="section-desc">
+                Синхронизируется напрямую с моим <a href="https://github.com/damnwu" target="_blank" style="color: var(--secondary); text-decoration: none;">GitHub</a> в реальном времени. Новые репозитории появляются здесь автоматически!
+            </p>
+        </div>
+
+        <div class="projects-grid" id="github-projects-grid">
+            <!-- Dynamically populated via GitHub API, fallback cards below -->
+            <div class="glass-card project-card reveal-item">
+                <div>
+                    <div class="project-card-badge"><i class="fas fa-sync fa-spin"></i> GitHub Repositories</div>
+                    <div class="project-title">damnwu / GitHub Projects</div>
+                    <p class="project-desc">Все публичные проекты и репозитории загружаются напрямую через GitHub API в режиме реального времени.</p>
+                </div>
+                <div class="project-footer">
+                    <div class="project-tags">
+                        <span class="project-tag">#GitHub</span>
+                        <span class="project-tag">#Code</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://github.com/damnwu" target="_blank" class="project-link-btn" title="GitHub Profile">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card project-card reveal-item">
+                <div>
+                    <div class="project-card-badge">Profile & IoT Hub</div>
+                    <div class="project-title">damnwu / Workspace</div>
+                    <p class="project-desc">Комплекс экспериментов по системной разработке, IoT на базе ESP32/Arduino и алгоритмические решения.</p>
+                </div>
+                <div class="project-footer">
+                    <div class="project-tags">
+                        <span class="project-tag">#ESP32</span>
+                        <span class="project-tag">#Python</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://github.com/damnwu/damnwu" target="_blank" class="project-link-btn" title="GitHub Profile">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <p>
+                Создано с <span class="footer-heart">💜</span> для <strong>damnwu</strong> · 
+                <a href="https://github.com/damnwu" target="_blank" style="color: var(--primary); text-decoration: none;">github.com/damnwu</a>
+            </p>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">
+                Нажмите клавишу <kbd style="background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--glass-border);">~</kbd> в любое время, чтобы запустить интерактивный терминал.
+            </p>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE TERMINAL POPUP -->
+    <div class="terminal-overlay" id="terminal-modal">
+        <div class="terminal-window">
+            <div class="terminal-titlebar">
+                <div class="terminal-buttons">
+                    <div class="terminal-btn close" id="term-close"></div>
+                    <div class="terminal-btn minimize"></div>
+                    <div class="terminal-btn maximize"></div>
+                </div>
+                <div class="terminal-title">damnwu@portfolio: ~ (bash)</div>
+                <div style="width: 40px;"></div>
+            </div>
+            <div class="terminal-body" id="term-body">
+                <div>Добро пожаловать в консоль портфолио damnwu!</div>
+                <div style="color: var(--secondary);">Наберите <span style="color: #fff;">help</span> для списка доступных команд.</div>
+                <br>
+            </div>
+            <div class="terminal-input-row" style="padding: 0 20px 16px;">
+                <span class="terminal-prompt">damnwu@box:~$</span>
+                <input type="text" class="terminal-input" id="term-input" autocomplete="off" spellcheck="false" placeholder="help, skills, steam, contacts, clear...">
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle" style="color: var(--online); font-size: 1.2rem;"></i>
+        <span id="toast-text">Никнейм скопирован в буфер!</span>
+    </div>
+
+    <!-- ==============================================
+         CLIENT-SIDE JAVASCRIPT & INTERACTION ENGINE
+         ============================================== -->
+    <script>
+    /* ========================================================
+       1. SYNTHESIZED WEB AUDIO SFX (Zero external dependencies)
+       ======================================================== */
+    let audioCtx = null;
+    let sfxEnabled = true;
+
+    function playSfx(freq = 440, type = 'sine', duration = 0.08) {
+        if (!sfxEnabled) return;
+        try {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(freq * 0.5, audioCtx.currentTime + duration);
+            
+            gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+            
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        } catch(e) {}
+    }
+
+    // Audio Toggle Button
+    const audioBtn = document.getElementById('audio-toggle');
+    const audioIcon = document.getElementById('audio-icon');
+    audioBtn.addEventListener('click', () => {
+        sfxEnabled = !sfxEnabled;
+        if (sfxEnabled) {
+            audioIcon.className = 'fas fa-volume-up';
+            audioBtn.classList.remove('active');
+            showToast('Звуковые эффекты включены');
+            playSfx(520);
+        } else {
+            audioIcon.className = 'fas fa-volume-mute';
+            audioBtn.classList.add('active');
+            showToast('Звуковые эффекты отключены');
+        }
+    });
+
+    /* ========================================================
+       2. TYPEWRITER EFFECT
+       ======================================================== */
+    const typeStrings = [
+        "Python Developer",
+        "ESP32 & Arduino Enthusiast",
+        "Dota 2 Midlaner · Pos 2",
+        "Low-Level & Systems Programming",
+        "C / C++ / Go / Kotlin",
+        "«Лучше один раз сделать, чем 100 раз прочитать»"
+    ];
+
+    let strIdx = 0;
+    let charIdx = 0;
+    let isDeleting = false;
+    const typeElement = document.getElementById('typewriter-text');
+
+    function typeLoop() {
+        const currentStr = typeStrings[strIdx];
+        
+        if (isDeleting) {
+            typeElement.textContent = currentStr.substring(0, charIdx - 1);
+            charIdx--;
+        } else {
+            typeElement.textContent = currentStr.substring(0, charIdx + 1);
+            charIdx++;
+        }
+
+        let speed = isDeleting ? 30 : 65;
+
+        if (!isDeleting && charIdx === currentStr.length) {
+            speed = 2200; // Пауза на полной фразе
+            isDeleting = true;
+        } else if (isDeleting && charIdx === 0) {
+            isDeleting = false;
+            strIdx = (strIdx + 1) % typeStrings.length;
+            speed = 400;
+        }
+
+        setTimeout(typeLoop, speed);
+    }
+    setTimeout(typeLoop, 800);
+
+    /* ========================================================
+       3. INTERACTIVE PARTICLE CANVAS
+       ======================================================== */
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let mouse = { x: null, y: null };
+
+    function initCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    initCanvas();
+    window.addEventListener('resize', initCanvas);
+
+    window.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+    });
+
+    class CanvasParticle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.vx = (Math.random() - 0.5) * 0.45;
+            this.vy = (Math.random() - 0.5) * 0.45;
+            this.radius = Math.random() * 1.8 + 0.6;
+            this.baseAlpha = Math.random() * 0.45 + 0.15;
+        }
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+            if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+
+            if (mouse.x !== null) {
+                const dx = mouse.x - this.x;
+                const dy = mouse.y - this.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 150) {
+                    this.x -= dx * 0.012;
+                    this.y -= dy * 0.012;
+                }
+            }
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(139, 92, 246, ${this.baseAlpha})`;
+            ctx.fill();
+        }
+    }
+
+    const P_COUNT = window.innerWidth < 768 ? 40 : 80;
+    for (let i = 0; i < P_COUNT; i++) {
+        particles.push(new CanvasParticle());
+    }
+
+    function renderParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].draw();
+            for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 130) {
+                    const alpha = (1 - dist / 130) * 0.12;
+                    ctx.strokeStyle = `rgba(139, 92, 246, ${alpha})`;
+                    ctx.lineWidth = 0.6;
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.stroke();
+                }
+            }
+        }
+        requestAnimationFrame(renderParticles);
+    }
+    renderParticles();
+
+    /* ========================================================
+       4. CUSTOM CURSOR
+       ======================================================== */
+    const cursorDot = document.getElementById('cursor-dot');
+    const cursorRing = document.getElementById('cursor-ring');
+    let ringX = 0, ringY = 0;
+    let dotX = 0, dotY = 0;
+
+    window.addEventListener('mousemove', (e) => {
+        dotX = e.clientX;
+        dotY = e.clientY;
+        cursorDot.style.left = dotX + 'px';
+        cursorDot.style.top = dotY + 'px';
+    });
+
+    function animateRing() {
+        ringX += (dotX - ringX) * 0.18;
+        ringY += (dotY - ringY) * 0.18;
+        cursorRing.style.left = ringX + 'px';
+        cursorRing.style.top = ringY + 'px';
+        requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    document.querySelectorAll('a, button, .glass-card, .tech-pill, .social-pill').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            cursorRing.classList.add('hover');
+            playSfx(750, 'sine', 0.03);
+        });
+        el.addEventListener('mouseleave', () => cursorRing.classList.remove('hover'));
+    });
+
+    /* ========================================================
+       5. COPY TO CLIPBOARD & TOAST
+       ======================================================== */
+    const toast = document.getElementById('toast');
+    const toastText = document.getElementById('toast-text');
+    let toastTimeout;
+
+    function showToast(msg) {
+        toastText.textContent = msg;
+        toast.classList.add('show');
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => {
+            toast.classList.remove('show');
+        }, 2800);
+    }
+
+    function copyDiscord(openApp = false) {
+        const username = "timon_deg";
+        
+        function onCopied() {
+            if (openApp) {
+                showToast(`Ник "${username}" скопирован! Открываю Discord...`);
+                setTimeout(() => {
+                    window.open('https://discord.com/channels/@me', '_blank');
+                }, 400);
+            } else {
+                showToast(`Discord ник "${username}" скопирован в буфер!`);
+            }
+        }
+
+        // 1. Попытка через современный Clipboard API (работает на HTTPS)
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(username).then(onCopied).catch(() => {
+                fallbackCopy(username);
+            });
+        } else {
+            // 2. Универсальный fallback через document.execCommand (работает локально file:// и без HTTPS)
+            fallbackCopy(username);
+        }
+
+        function fallbackCopy(text) {
+            try {
+                const textarea = document.createElement("textarea");
+                textarea.value = text;
+                textarea.style.position = "fixed";
+                textarea.style.left = "-9999px";
+                textarea.style.top = "-9999px";
+                textarea.style.opacity = "0";
+                document.body.appendChild(textarea);
+                textarea.focus();
+                textarea.select();
+                const success = document.execCommand('copy');
+                document.body.removeChild(textarea);
+                if (success) {
+                    onCopied();
+                } else {
+                    showToast(`Discord ник: ${text}`);
+                    if (openApp) window.open('https://discord.com/channels/@me', '_blank');
+                }
+            } catch (err) {
+                showToast(`Discord ник: ${text}`);
+                if (openApp) window.open('https://discord.com/channels/@me', '_blank');
+            }
+        }
+    }
+
+    /* ========================================================
+       6. SCROLL REVEAL & COUNTERS
+       ======================================================== */
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                
+                // Animate progress bars if inside
+                const bars = entry.target.querySelectorAll('.game-progress-fill');
+                bars.forEach(bar => {
+                    bar.style.width = bar.getAttribute('data-progress') + '%';
+                });
+
+                // Animate counters if present
+                const counters = entry.target.querySelectorAll('[data-counter]');
+                counters.forEach(counter => {
+                    const target = parseInt(counter.getAttribute('data-counter'));
+                    let current = 0;
+                    const step = Math.max(1, Math.floor(target / 40));
+                    const timer = setInterval(() => {
+                        current += step;
+                        if (current >= target) {
+                            counter.textContent = target;
+                            clearInterval(timer);
+                        } else {
+                            counter.textContent = current;
+                        }
+                    }, 25);
+                });
+
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.reveal-item').forEach(el => revealObserver.observe(el));
+
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+        const nav = document.getElementById('navbar');
+        if (window.scrollY > 40) {
+            nav.classList.add('scrolled');
+        } else {
+            nav.classList.remove('scrolled');
+        }
+    });
+
+    // Mobile menu toggle
+    const menuToggle = document.getElementById('menu-toggle');
+    const navLinks = document.getElementById('nav-links');
+    menuToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('open');
+    });
+
+    navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => navLinks.classList.remove('open'));
+    });
+
+    /* ========================================================
+       7. INTERACTIVE TERMINAL
+       ======================================================== */
+    const termModal = document.getElementById('terminal-modal');
+    const termTrigger = document.getElementById('terminal-trigger');
+    const termClose = document.getElementById('term-close');
+    const termInput = document.getElementById('term-input');
+    const termBody = document.getElementById('term-body');
+
+    function toggleTerminal() {
+        const isOpen = termModal.classList.toggle('open');
+        if (isOpen) {
+            playSfx(440, 'triangle', 0.12);
+            termInput.focus();
+        } else {
+            playSfx(320, 'triangle', 0.08);
+        }
+    }
+
+    termTrigger.addEventListener('click', toggleTerminal);
+    termClose.addEventListener('click', toggleTerminal);
+
+    window.addEventListener('keydown', (e) => {
+        if (e.key === '`' || e.key === '~' || e.key === 'ё' || e.key === 'Ё') {
+            e.preventDefault();
+            toggleTerminal();
+        } else if (e.key === 'Escape' && termModal.classList.contains('open')) {
+            toggleTerminal();
+        }
+    });
+
+    termInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            const cmd = termInput.value.trim().toLowerCase();
+            termInput.value = '';
+            handleCommand(cmd);
+        }
+    });
+
+    function printTerm(text, color = '#e6edf3') {
+        const row = document.createElement('div');
+        row.style.color = color;
+        row.innerHTML = text;
+        termBody.appendChild(row);
+        termBody.scrollTop = termBody.scrollHeight;
+    }
+
+    function handleCommand(cmd) {
+        printTerm(`damnwu@box:~$ ${cmd}`, 'var(--secondary)');
+        playSfx(500, 'sine', 0.05);
+
+        switch(cmd) {
+            case 'help':
+                printTerm(`Доступные команды:
+  <span style="color:#c084fc;">about</span>     - Кратко о разработчике
+  <span style="color:#c084fc;">skills</span>    - Стек технологий и микроконтроллеры
+  <span style="color:#c084fc;">steam</span>     - Статистика Dota 2 и Steam
+  <span style="color:#c084fc;">contacts</span>  - Способы связи (DS, TG, GitHub)
+  <span style="color:#c084fc;">projects</span>  - Проекты и репозитории
+  <span style="color:#c084fc;">clear</span>     - Очистить консоль
+  <span style="color:#c084fc;">sudo</span>      - Получить права root`);
+                break;
+            case 'about':
+                printTerm("damnwu — разработчик, интересующийся системным программированием, Python, IoT на ESP32 и геймингом (Dota 2, CS2).");
+                break;
+            case 'skills':
+                printTerm("Languages: Python, C, C++, Go, Kotlin, Java, 1C\nHardware: ESP32, Arduino, Схемотехника\nTools: Linux, Git, JetBrains, VS Code");
+                break;
+            case 'steam':
+                printTerm("Steam: timurka_yo (ID: 76561199488101705)\nУровень: 5 | Игр: 35\nDota 2: 520 часов (Pos 2 Mid)\nCS2: 43 часа");
+                break;
+            case 'contacts':
+                printTerm("Discord: timon_deg\nTelegram: @damnwu0\nGitHub: https://github.com/damnwu");
+                break;
+            case 'projects':
+                printTerm("GitHub Repositories: https://github.com/damnwu?tab=repositories\nСинхронизировано в реальном времени.");
+                break;
+            case 'clear':
+                termBody.innerHTML = '';
+                break;
+            case 'sudo':
+                printTerm("Permission denied: user damnwu is already in God Mode ⚡", "#ef4444");
+                break;
+            case '':
+                break;
+            default:
+                printTerm(`Команда не найдена: "${cmd}". Введите "help".`, '#f87171');
+        }
+    }
+
+    /* ========================================================
+       8. LIVE DATA SYNCHRONIZATION ENGINE
+       ======================================================== */
+
+    // --- A. Real-Time GitHub Repositories Fetch ---
+    async function syncGitHubRepos() {
+        const grid = document.getElementById('github-projects-grid');
+        if (!grid) return;
+
+        try {
+            const resp = await fetch('https://api.github.com/users/damnwu/repos?sort=pushed&per_page=6');
+            if (!resp.ok) return; // Keep fallback cards if rate-limited or error
+
+            const repos = await resp.json();
+            if (!Array.isArray(repos) || repos.length === 0) return;
+
+            grid.innerHTML = ''; // Replace skeleton with live cards
+
+            repos.forEach(repo => {
+                const card = document.createElement('div');
+                card.className = 'glass-card project-card reveal-item visible';
+
+                const lang = repo.language || 'Code';
+                const desc = repo.description || 'Репозиторий на GitHub. Кликните для перехода к исходному коду.';
+                const liveUrl = repo.homepage || (repo.has_pages ? `https://damnwu.github.io/${repo.name}/` : null);
+                
+                // Format update date
+                const date = new Date(repo.pushed_at).toLocaleDateString('ru-RU', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric'
+                });
+
+                card.innerHTML = `
+                    <div>
+                        <div class="project-card-badge">
+                            <i class="fab fa-git-alt"></i> ${lang} · ${date}
+                        </div>
+                        <div class="project-title">${repo.name}</div>
+                        <p class="project-desc">${desc}</p>
+                    </div>
+                    <div class="project-footer">
+                        <div class="project-tags">
+                            <span class="project-tag"><i class="far fa-star"></i> ${repo.stargazers_count}</span>
+                            <span class="project-tag"><i class="fas fa-code-branch"></i> ${repo.forks_count}</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="${repo.html_url}" target="_blank" class="project-link-btn" title="GitHub Repository">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            ${liveUrl ? `
+                                <a href="${liveUrl}" target="_blank" class="project-link-btn" title="Live Preview">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+
+                // Add SFX & Cursor interaction
+                card.querySelectorAll('a').forEach(a => {
+                    a.addEventListener('mouseenter', () => cursorRing.classList.add('hover'));
+                    a.addEventListener('mouseleave', () => cursorRing.classList.remove('hover'));
+                });
+
+                grid.appendChild(card);
+            });
+        } catch (e) {
+            console.log('GitHub sync using cached projects.');
+        }
+    }
+    syncGitHubRepos();
+
+    // --- B. Live Steam Activity Sync (from steam-data.json or API) ---
+    async function syncSteamLive() {
+        try {
+            const resp = await fetch('steam-data.json');
+            if (!resp.ok) return;
+            const data = await resp.json();
+            
+            if (data && data.games) {
+                // Find Dota 2
+                const dota = data.games.find(g => g.appid === 570);
+                if (dota) {
+                    const dotaHours = Math.round(dota.playtime_forever / 60);
+                    // Update counters & labels
+                    document.querySelectorAll('[data-counter="520"]').forEach(el => {
+                        el.setAttribute('data-counter', dotaHours);
+                        el.textContent = dotaHours;
+                    });
+                    const dotaCard = document.querySelector('.game-item-card:nth-child(1) .game-item-hours');
+                    if (dotaCard) dotaCard.textContent = `${dotaHours} ч всего`;
+                }
+
+                // Find CS2
+                const cs = data.games.find(g => g.appid === 730);
+                if (cs) {
+                    const csHours = Math.round(cs.playtime_forever / 60);
+                    const csCard = document.querySelector('.game-item-card:nth-child(2) .game-item-hours');
+                    if (csCard) csCard.textContent = `${csHours} ч всего`;
+                }
+            }
+        } catch (e) {
+            // steam-data.json not yet generated; default hours displayed
+        }
+    }
+    syncSteamLive();
+    </script>
+</body>
+</html>

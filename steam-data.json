@@ -1,0 +1,23 @@
+{
+  "total_count": 3,
+  "games": [
+    {
+      "appid": 570,
+      "name": "Dota 2",
+      "playtime_2weeks": 1380,
+      "playtime_forever": 31200
+    },
+    {
+      "appid": 730,
+      "name": "Counter-Strike 2",
+      "playtime_2weeks": 180,
+      "playtime_forever": 2580
+    },
+    {
+      "appid": 3241660,
+      "name": "R.E.P.O.",
+      "playtime_2weeks": 138,
+      "playtime_forever": 138
+    }
+  ]
+}
