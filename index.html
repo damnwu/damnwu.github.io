@@ -1961,12 +1961,14 @@
                     </div>
 
                     <!-- Games Collection (Auto-expands on game launch) -->
-                    <div class="dc-box-title" style="display: flex; justify-content: space-between; align-items: center;">
-                        <span>Коллекция игр</span>
-                        <span id="dc-games-count" style="font-size: 0.72rem; color: #a5b4fc; font-family: var(--font-mono);"></span>
-                    </div>
-                    <div class="dc-games-row" id="dc-games-collection" style="margin-bottom: 14px;">
-                        <!-- Initial items rendered via JS and auto-expand dynamically -->
+                    <div id="dc-games-section" style="display: none; margin-bottom: 14px;">
+                        <div class="dc-box-title" style="display: flex; justify-content: space-between; align-items: center;">
+                            <span>Коллекция игр</span>
+                            <span id="dc-games-count" style="font-size: 0.72rem; color: #a5b4fc; font-family: var(--font-mono);"></span>
+                        </div>
+                        <div class="dc-games-row" id="dc-games-collection">
+                            <!-- Populated dynamically ONLY when a game is launched -->
+                        </div>
                     </div>
 
                     <!-- Activity Box (Playing Dota 2 / Spotify) -->
@@ -2705,48 +2707,42 @@
     }
     syncGitHubRepos();
 
-    // --- E. Dynamic Game Collection Auto-Expander ---
+    // --- E. Dynamic Game Collection (100% Live, No Stock Games) ---
     let activeGameName = null;
-
-    const BASE_GAMES = [
-        {
-            name: "Dota 2",
-            icon: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/570/header.jpg"
-        },
-        {
-            name: "Counter-Strike 2",
-            icon: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/730/header.jpg"
-        },
-        {
-            name: "R.E.P.O.",
-            icon: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3241660/header.jpg"
-        }
-    ];
 
     function getGameCollection() {
         try {
-            const raw = localStorage.getItem('damnwu_game_history');
+            // Используем чистый ключ, старые стоковые игры полностью удалены
+            const raw = localStorage.getItem('damnwu_live_games');
             if (raw) {
                 const parsed = JSON.parse(raw);
-                if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+                if (Array.isArray(parsed)) return parsed;
             }
         } catch(e) {}
-        return [...BASE_GAMES];
+        return [];
     }
 
     function saveGameCollection(list) {
         try {
-            localStorage.setItem('damnwu_game_history', JSON.stringify(list));
+            localStorage.setItem('damnwu_live_games', JSON.stringify(list));
         } catch(e) {}
     }
 
     function renderGamesCollection() {
+        const section = document.getElementById('dc-games-section');
         const container = document.getElementById('dc-games-collection');
-        if (!container) return;
+        if (!container || !section) return;
+
         const games = getGameCollection();
 
+        if (games.length === 0) {
+            section.style.display = 'none';
+            return;
+        }
+
+        section.style.display = 'block';
         const countEl = document.getElementById('dc-games-count');
-        if (countEl) countEl.textContent = `${games.length} игр`;
+        if (countEl) countEl.textContent = `${games.length} ${games.length === 1 ? 'игра' : 'игр'}`;
 
         container.innerHTML = '';
         games.forEach(g => {
@@ -2762,7 +2758,7 @@
             }
 
             img.onerror = () => {
-                img.src = 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/570/header.jpg';
+                img.style.display = 'none';
             };
 
             container.appendChild(img);
@@ -2770,20 +2766,23 @@
     }
 
     function registerLaunchedGame(name, iconUrl) {
-        if (!name) return;
+        if (!name || typeof name !== 'string') return;
+        const trimmed = name.trim();
+        if (!trimmed || trimmed.toLowerCase() === 'custom status') return;
+
         let list = getGameCollection();
-        const existingIdx = list.findIndex(g => g.name.toLowerCase() === name.toLowerCase());
+        const existingIdx = list.findIndex(g => g.name.toLowerCase() === trimmed.toLowerCase());
 
         if (existingIdx === -1) {
-            // Новая игра обнаружена при запуске! Добавляем в историю
+            // Игра впервые запущена! Добавляем в коллекцию
             list.push({
-                name: name,
+                name: trimmed,
                 icon: iconUrl || 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/570/header.jpg',
                 discoveredAt: Date.now()
             });
             saveGameCollection(list);
             renderGamesCollection();
-            showToast(`🎮 Новая игра добавлена в коллекцию: ${name}!`);
+            showToast(`🎮 Добавлено в коллекцию: ${trimmed}`);
         } else if (iconUrl && list[existingIdx].icon !== iconUrl) {
             list[existingIdx].icon = iconUrl;
             saveGameCollection(list);
@@ -2821,13 +2820,6 @@
                     const csCard = document.querySelector('.game-item-card:nth-child(2) .game-item-hours');
                     if (csCard) csCard.textContent = `${csHours} ч всего`;
                 }
-
-                // Автоматически добавляем все игры из Steam в коллекцию профиля!
-                data.games.forEach(g => {
-                    if (g.name && g.appid) {
-                        registerLaunchedGame(g.name, `https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/${g.appid}/header.jpg`);
-                    }
-                });
             }
         } catch (e) {
             // steam-data.json not yet generated; default hours displayed
