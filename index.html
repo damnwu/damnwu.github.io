@@ -972,6 +972,28 @@
             background: #1e1f22;
         }
 
+        .dc-avatar-decoration {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: 112px;
+            height: 112px;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .dc-guild-tag {
+            font-size: 0.72rem;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            color: #c7d2fe;
+            background: rgba(88, 101, 242, 0.25);
+            border: 1px solid rgba(88, 101, 242, 0.45);
+            padding: 2px 7px;
+            border-radius: 6px;
+            letter-spacing: 0.05em;
+        }
+
         .dc-status-indicator {
             position: absolute;
             bottom: 3px;
@@ -1665,7 +1687,7 @@
                 <a href="https://steamcommunity.com/id/timurka_yo/" target="_blank" class="social-pill stm" onclick="playSfx(380)">
                     <i class="fab fa-steam"></i> Steam
                 </a>
-                <a href="javascript:void(0)" onclick="copyDiscord(true); playSfx(480);" class="social-pill dc" title="Скопировать ник и открыть Discord">
+                <a href="https://discord.com/users/896804605151805521" target="_blank" onclick="copyDiscord(false); playSfx(480);" class="social-pill dc" title="Открыть профиль Discord">
                     <i class="fab fa-discord"></i> timon_deg
                 </a>
                 <a href="https://t.me/damnwu0" target="_blank" class="social-pill tg" onclick="playSfx(520)">
@@ -1820,21 +1842,23 @@
                 </div>
 
                 <div class="dc-card-content">
-                    <!-- Avatar Row with Real Status Dot -->
+                    <!-- Avatar Row with Real Status Dot & Discord Decoration -->
                     <div class="dc-avatar-row">
                         <div class="dc-avatar-wrap">
-                            <img src="https://avatars.githubusercontent.com/u/318945136?v=4" 
+                            <img src="https://cdn.discordapp.com/avatars/896804605151805521/6daecf321557d04cbe119139b32f8c3f.png?size=256" 
                                  alt="Discord Avatar" class="dc-avatar-img" id="dc-avatar-img">
-                            <div class="dc-status-indicator" title="Статус: В сети">
-                                <div class="dc-status-dot online" id="dc-status-dot"></div>
+                            <img src="https://cdn.discordapp.com/avatar-decoration-presets/a_d943453ba3b3f0286c0a76a3b0b0f896.png" 
+                                 alt="Discord Avatar Decoration" class="dc-avatar-decoration" id="dc-avatar-decoration">
+                            <div class="dc-status-indicator" title="Статус: Не беспокоить">
+                                <div class="dc-status-dot dnd" id="dc-status-dot"></div>
                             </div>
                         </div>
                         <div class="dc-header-actions">
                             <div class="dc-live-pill" id="dc-live-pill">
-                                <span class="dot"></span>
-                                <span id="dc-status-label">В сети</span>
+                                <span class="dot" style="background: #f23f43;"></span>
+                                <span id="dc-status-label">Не беспокоить</span>
                             </div>
-                            <button class="btn-icon" style="width: 32px; height: 32px; font-size: 0.75rem;" onclick="promptDiscordId();" title="Привязать Discord ID для 100% live данных">
+                            <button class="btn-icon" style="width: 32px; height: 32px; font-size: 0.75rem;" onclick="promptDiscordId();" title="Настроить Discord ID">
                                 <i class="fas fa-cog"></i>
                             </button>
                         </div>
@@ -1844,6 +1868,7 @@
                     <div class="dc-user-header">
                         <div class="dc-display-name">
                             <span id="dc-display-name-text">damnwu</span>
+                            <span class="dc-guild-tag" id="dc-guild-tag" title="Клан MEOW">MEOW</span>
                         </div>
                         <div class="dc-handle" id="dc-handle-text">@timon_deg</div>
                     </div>
@@ -1866,10 +1891,10 @@
                         <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/570/header.jpg" 
                              alt="Dota 2" class="dc-activity-icon" id="dc-act-icon">
                         <div class="dc-activity-details">
-                            <div class="dc-activity-type" id="dc-act-type">Играет в игру</div>
-                            <div class="dc-activity-title" id="dc-act-title">Dota 2</div>
-                            <div class="dc-activity-state" id="dc-act-state">Рейтинговый матч · Midlane</div>
-                            <div class="dc-activity-timer" id="dc-act-timer"><i class="far fa-clock"></i> 01:24:18 прошло</div>
+                            <div class="dc-activity-type" id="dc-act-type">В сети через Desktop</div>
+                            <div class="dc-activity-title" id="dc-act-title">Discord Desktop</div>
+                            <div class="dc-activity-state" id="dc-act-state">Готов к общению и совместному коду</div>
+                            <div class="dc-activity-timer" id="dc-act-timer" style="color: #a5b4fc;"><i class="fas fa-laptop"></i> Активен на ПК</div>
                         </div>
                     </div>
 
@@ -1878,8 +1903,8 @@
                         <button class="btn btn-glass" style="flex: 1; justify-content: center; font-size: 0.88rem;" onclick="copyDiscord(false); playSfx(600);">
                             <i class="far fa-copy"></i> Скопировать ник
                         </button>
-                        <a href="https://discord.com/channels/@me" target="_blank" class="btn btn-glass" style="flex: 1; justify-content: center; text-decoration: none; font-size: 0.88rem;" onclick="copyDiscord(false); playSfx(600);">
-                            <i class="fab fa-discord"></i> Открыть Discord
+                        <a href="https://discord.com/users/896804605151805521" target="_blank" class="btn btn-glass" style="flex: 1; justify-content: center; text-decoration: none; font-size: 0.88rem;" onclick="copyDiscord(false); playSfx(600);">
+                            <i class="fab fa-discord"></i> Профиль Discord
                         </a>
                     </div>
                 </div>
@@ -2638,11 +2663,11 @@
     syncSteamLive();
 
     // --- C. Real-Time Discord Profile & Presence (Lanyard API) ---
-    let DISCORD_USER_ID = localStorage.getItem('damnwu_discord_id') || "";
+    let DISCORD_USER_ID = localStorage.getItem('damnwu_discord_id') || "896804605151805521";
 
     function promptDiscordId() {
-        const current = DISCORD_USER_ID || "";
-        const entered = prompt("Введи свой 18-значный Discord User ID для живой синхронизации статуса и авы:\n\nКак получить ID:\n1. Настройки Discord -> Расширенные -> Включить «Режим разработчика»\n2. Правой кнопкой мыши по своему профилю -> Скопировать ID", current);
+        const current = DISCORD_USER_ID || "896804605151805521";
+        const entered = prompt("Введи свой Discord User ID для синхронизации:", current);
         if (entered !== null) {
             const clean = entered.trim();
             if (clean) {
@@ -2654,6 +2679,144 @@
         }
     }
 
+    function applyLanyardData(d) {
+        if (!d) return;
+        const user = d.discord_user;
+        if (!user) return;
+
+        // 1. Аватарка из Discord CDN
+        const avatarEl = document.getElementById('dc-avatar-img');
+        if (avatarEl && user.avatar) {
+            const isGif = user.avatar.startsWith('a_');
+            avatarEl.src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${isGif ? 'gif' : 'png'}?size=256`;
+        }
+
+        // 2. Анимированная рамка/декорация аватарки
+        const decorEl = document.getElementById('dc-avatar-decoration');
+        if (decorEl) {
+            if (user.avatar_decoration_data && user.avatar_decoration_data.asset) {
+                decorEl.src = `https://cdn.discordapp.com/avatar-decoration-presets/${user.avatar_decoration_data.asset}.png`;
+                decorEl.style.display = 'block';
+            } else {
+                decorEl.style.display = 'none';
+            }
+        }
+
+        // 3. Баннер профиля
+        const bannerEl = document.getElementById('dc-banner');
+        if (bannerEl && user.banner) {
+            bannerEl.style.backgroundImage = `url(https://cdn.discordapp.com/banners/${user.id}/${user.banner}.png?size=600)`;
+        }
+
+        // 4. Имя и клан-тег
+        const nameEl = document.getElementById('dc-display-name-text');
+        if (nameEl) nameEl.textContent = user.global_name || user.username;
+        const handleEl = document.getElementById('dc-handle-text');
+        if (handleEl) handleEl.textContent = `@${user.username}`;
+        const guildTagEl = document.getElementById('dc-guild-tag');
+        if (guildTagEl) {
+            if (user.primary_guild && user.primary_guild.tag) {
+                guildTagEl.textContent = user.primary_guild.tag;
+                guildTagEl.style.display = 'inline-block';
+            } else {
+                guildTagEl.style.display = 'none';
+            }
+        }
+
+        // 5. Статус (Online, Idle, DND, Offline)
+        const dot = document.getElementById('dc-status-dot');
+        const statusLabel = document.getElementById('dc-status-label');
+        const livePillDot = document.querySelector('#dc-live-pill .dot');
+        const currentStatus = d.discord_status || 'offline';
+        
+        if (dot) {
+            dot.className = `dc-status-dot ${currentStatus}`;
+        }
+        if (statusLabel) {
+            const map = {
+                online: 'В сети',
+                idle: 'Не активен',
+                dnd: 'Не беспокоить',
+                offline: 'Не в сети'
+            };
+            statusLabel.textContent = map[currentStatus] || 'В сети';
+        }
+        if (livePillDot) {
+            const colorMap = {
+                online: '#23a55a',
+                idle: '#f0b232',
+                dnd: '#f23f43',
+                offline: '#80848e'
+            };
+            livePillDot.style.background = colorMap[currentStatus] || '#23a55a';
+        }
+
+        // 6. Кастомный статус
+        const customStatusEl = document.getElementById('dc-custom-status');
+        const custom = d.activities ? d.activities.find(a => a.type === 4) : null;
+        if (customStatusEl) {
+            if (custom) {
+                const emoji = custom.emoji ? (custom.emoji.name + ' ') : '💬 ';
+                customStatusEl.innerHTML = `<i class="fas fa-quote-left" style="font-size:0.75rem;"></i> <span>${emoji}${custom.state || ''}</span>`;
+                customStatusEl.style.display = 'flex';
+            } else {
+                customStatusEl.innerHTML = `<i class="fas fa-gamepad"></i> <span>Mid or feed · ESP32 & Python dev</span>`;
+            }
+        }
+
+        // 7. Активность (Spotify или Игра)
+        const actBox = document.getElementById('dc-activity-box');
+        if (actBox) {
+            if (d.listening_to_spotify && d.spotify) {
+                actBox.innerHTML = `
+                    <img src="${d.spotify.album_art_url}" class="dc-activity-icon" alt="Spotify" style="border-radius: 8px;">
+                    <div class="dc-activity-details">
+                        <div class="dc-activity-type" style="color: #1db954;"><i class="fab fa-spotify"></i> Слушает Spotify</div>
+                        <div class="dc-activity-title">${d.spotify.song}</div>
+                        <div class="dc-activity-state">${d.spotify.artist}</div>
+                        <div class="dc-activity-timer" style="color: #1db954;"><i class="fas fa-play"></i> Сейчас играет</div>
+                    </div>
+                `;
+            } else if (d.activities && d.activities.length > 0) {
+                const game = d.activities.find(a => a.type === 0);
+                if (game) {
+                    let imgUrl = 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/570/header.jpg';
+                    if (game.assets && game.assets.large_image) {
+                        imgUrl = game.assets.large_image.startsWith('mp:external')
+                            ? 'https://' + game.assets.large_image.replace(/mp:external\/[^\/]+\//, '')
+                            : `https://cdn.discordapp.com/app-assets/${game.application_id}/${game.assets.large_image}.png`;
+                    }
+                    actBox.innerHTML = `
+                        <img src="${imgUrl}" class="dc-activity-icon" alt="${game.name}">
+                        <div class="dc-activity-details">
+                            <div class="dc-activity-type"><i class="fas fa-gamepad"></i> Играет в игру</div>
+                            <div class="dc-activity-title">${game.name}</div>
+                            <div class="dc-activity-state">${game.details || game.state || 'В игре'}</div>
+                            <div class="dc-activity-timer"><i class="far fa-clock"></i> Активен сейчас</div>
+                        </div>
+                    `;
+                }
+            } else {
+                // Если сейчас игр нет, показываем статус активности клиента
+                let clientText = 'В сети';
+                if (d.active_on_discord_desktop) clientText = 'Активен через Discord Desktop';
+                else if (d.active_on_discord_mobile) clientText = 'Активен через Discord Mobile';
+                else if (d.active_on_discord_web) clientText = 'Активен через Discord Web';
+
+                actBox.innerHTML = `
+                    <div style="width: 50px; height: 50px; border-radius: 12px; background: rgba(88, 101, 242, 0.15); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #5865F2; flex-shrink: 0;">
+                        <i class="fab fa-discord"></i>
+                    </div>
+                    <div class="dc-activity-details">
+                        <div class="dc-activity-type">Клиент Discord</div>
+                        <div class="dc-activity-title">${clientText}</div>
+                        <div class="dc-activity-state">Готов к общению и совместному коду</div>
+                    </div>
+                `;
+            }
+        }
+    }
+
     async function syncDiscordPresence() {
         if (!DISCORD_USER_ID) return;
 
@@ -2661,94 +2824,46 @@
             const resp = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`);
             if (!resp.ok) return;
             const res = await resp.json();
-            if (!res.success || !res.data) return;
-
-            const d = res.data;
-            const user = d.discord_user;
-
-            // 1. Аватарка из Discord CDN
-            const avatarEl = document.getElementById('dc-avatar-img');
-            if (avatarEl && user.avatar) {
-                const isGif = user.avatar.startsWith('a_');
-                avatarEl.src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${isGif ? 'gif' : 'png'}?size=256`;
+            if (res.success && res.data) {
+                applyLanyardData(res.data);
             }
-
-            // 2. Баннер
-            const bannerEl = document.getElementById('dc-banner');
-            if (bannerEl && user.banner) {
-                bannerEl.style.backgroundImage = `url(https://cdn.discordapp.com/banners/${user.id}/${user.banner}.png?size=600)`;
-            }
-
-            // 3. Имя пользователя
-            const nameEl = document.getElementById('dc-display-name-text');
-            if (nameEl) nameEl.textContent = user.global_name || user.username;
-            const handleEl = document.getElementById('dc-handle-text');
-            if (handleEl) handleEl.textContent = `@${user.username}`;
-
-            // 4. Статус (Online, Idle, DND, Offline)
-            const dot = document.getElementById('dc-status-dot');
-            const statusLabel = document.getElementById('dc-status-label');
-            if (dot) {
-                dot.className = `dc-status-dot ${d.discord_status}`;
-            }
-            if (statusLabel) {
-                const map = {
-                    online: 'В сети',
-                    idle: 'Не активен',
-                    dnd: 'Не беспокоить',
-                    offline: 'Не в сети'
-                };
-                statusLabel.textContent = map[d.discord_status] || 'В сети';
-            }
-
-            // 5. Кастомный статус
-            const customStatusEl = document.getElementById('dc-custom-status');
-            const custom = d.activities ? d.activities.find(a => a.type === 4) : null;
-            if (customStatusEl && custom) {
-                const emoji = custom.emoji ? (custom.emoji.name + ' ') : '💬 ';
-                customStatusEl.innerHTML = `<span>${emoji}${custom.state || ''}</span>`;
-            }
-
-            // 6. Активность (Игра или Spotify)
-            const actBox = document.getElementById('dc-activity-box');
-            if (actBox) {
-                if (d.listening_to_spotify && d.spotify) {
-                    actBox.innerHTML = `
-                        <img src="${d.spotify.album_art_url}" class="dc-activity-icon" alt="Spotify" style="border-radius: 8px;">
-                        <div class="dc-activity-details">
-                            <div class="dc-activity-type" style="color: #1db954;"><i class="fab fa-spotify"></i> Слушает Spotify</div>
-                            <div class="dc-activity-title">${d.spotify.song}</div>
-                            <div class="dc-activity-state">${d.spotify.artist}</div>
-                            <div class="dc-activity-timer" style="color: #1db954;"><i class="fas fa-play"></i> Сейчас играет</div>
-                        </div>
-                    `;
-                } else if (d.activities && d.activities.length > 0) {
-                    const game = d.activities.find(a => a.type === 0);
-                    if (game) {
-                        let imgUrl = 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/570/header.jpg';
-                        if (game.assets && game.assets.large_image) {
-                            imgUrl = game.assets.large_image.startsWith('mp:external')
-                                ? 'https://' + game.assets.large_image.replace(/mp:external\/[^\/]+\//, '')
-                                : `https://cdn.discordapp.com/app-assets/${game.application_id}/${game.assets.large_image}.png`;
-                        }
-                        actBox.innerHTML = `
-                            <img src="${imgUrl}" class="dc-activity-icon" alt="${game.name}">
-                            <div class="dc-activity-details">
-                                <div class="dc-activity-type"><i class="fas fa-gamepad"></i> Играет в игру</div>
-                                <div class="dc-activity-title">${game.name}</div>
-                                <div class="dc-activity-state">${game.details || game.state || 'В игре'}</div>
-                                <div class="dc-activity-timer"><i class="far fa-clock"></i> Активен сейчас</div>
-                            </div>
-                        `;
-                    }
-                }
-            }
-
         } catch (e) {
-            console.log('Lanyard sync:', e);
+            console.log('Lanyard REST sync:', e);
         }
     }
+
+    // WebSocket для мгновенных живых обновлений статуса
+    function initLanyardWebSocket() {
+        if (!DISCORD_USER_ID) return;
+        try {
+            const ws = new WebSocket('wss://api.lanyard.rest/socket');
+            let hb;
+
+            ws.onmessage = (e) => {
+                const msg = JSON.parse(e.data);
+                if (msg.op === 1) { // Hello
+                    hb = setInterval(() => ws.send(JSON.stringify({ op: 3 })), msg.d.heartbeat_interval);
+                    ws.send(JSON.stringify({
+                        op: 2,
+                        d: { subscribe_to_id: DISCORD_USER_ID }
+                    }));
+                } else if (msg.op === 0) { // Event
+                    if (msg.d) applyLanyardData(msg.d);
+                }
+            };
+
+            ws.onclose = () => {
+                clearInterval(hb);
+                setTimeout(initLanyardWebSocket, 15000);
+            };
+        } catch (e) {
+            // Если вебсокет заблокирован, опрашиваем через REST
+            setInterval(syncDiscordPresence, 15000);
+        }
+    }
+
     syncDiscordPresence();
+    initLanyardWebSocket();
     </script>
 </body>
 </html>
