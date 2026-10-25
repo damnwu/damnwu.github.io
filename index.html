@@ -1954,11 +1954,8 @@
                         </div>
                     </div>
 
-                    <!-- Custom Status Bubble -->
-                    <div class="dc-custom-status" id="dc-custom-status">
-                        <i class="fas fa-comment-dots"></i>
-                        <span>О чём думаете?</span>
-                    </div>
+                    <!-- Custom Status Bubble (shown ONLY if user has an active custom status in Discord) -->
+                    <div class="dc-custom-status" id="dc-custom-status" style="display: none;"></div>
 
                     <!-- Games Collection (Auto-expands on game launch) -->
                     <div id="dc-games-section" style="display: none; margin-bottom: 14px;">
@@ -2927,16 +2924,24 @@
             livePillDot.style.background = colorMap[currentStatus] || '#23a55a';
         }
 
-        // 6. Кастомный статус
+        // 6. Кастомный статус (скрыт, пока не установлен реальный статус в Discord)
         const customStatusEl = document.getElementById('dc-custom-status');
         const custom = d.activities ? d.activities.find(a => a.type === 4) : null;
         if (customStatusEl) {
-            if (custom) {
-                const emoji = custom.emoji ? (custom.emoji.name + ' ') : '💬 ';
-                customStatusEl.innerHTML = `<i class="fas fa-quote-left" style="font-size:0.75rem;"></i> <span>${emoji}${custom.state || ''}</span>`;
+            if (custom && (custom.state || custom.emoji)) {
+                let emojiStr = '';
+                if (custom.emoji) {
+                    if (custom.emoji.id) {
+                        emojiStr = `<img src="https://cdn.discordapp.com/emojis/${custom.emoji.id}.${custom.emoji.animated ? 'gif' : 'webp'}?size=32" style="width:18px;height:18px;vertical-align:middle;margin-right:6px;" alt="">`;
+                    } else if (custom.emoji.name) {
+                        emojiStr = custom.emoji.name + ' ';
+                    }
+                }
+                customStatusEl.innerHTML = `<i class="fas fa-comment-dots" style="font-size:0.8rem;color:#a5b4fc;"></i> <span>${emojiStr}${custom.state || ''}</span>`;
                 customStatusEl.style.display = 'flex';
             } else {
-                customStatusEl.innerHTML = `<i class="fas fa-comment-dots"></i> <span>О чём думаете?</span>`;
+                customStatusEl.innerHTML = '';
+                customStatusEl.style.display = 'none';
             }
         }
 
