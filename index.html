@@ -868,132 +868,334 @@
             margin-top: 30px;
         }
 
-        /* Discord Card */
-        .discord-glass-card {
-            padding: 32px;
-            background: linear-gradient(135deg, rgba(88, 101, 242, 0.08), rgba(15, 18, 30, 0.6));
-            border: 1px solid rgba(88, 101, 242, 0.25);
+        /* ============================
+           DISCORD & TELEGRAM LIVE PROFILE CARDS
+           ============================ */
+        .live-status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 28px;
+            margin-top: 30px;
+        }
+
+        /* Authentic Discord Profile Widget */
+        .discord-profile-card {
+            background: rgba(17, 19, 31, 0.7);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid rgba(88, 101, 242, 0.28);
+            border-radius: 24px;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            transition: all 0.35s var(--ease-out-expo);
+            position: relative;
+            box-shadow: 0 14px 34px -10px rgba(0, 0, 0, 0.5);
         }
 
-        .discord-card-top {
+        .discord-profile-card:hover {
+            border-color: rgba(88, 101, 242, 0.55);
+            box-shadow: 0 18px 45px -10px rgba(0, 0, 0, 0.7), 0 0 35px rgba(88, 101, 242, 0.25);
+            transform: translateY(-5px);
+        }
+
+        .dc-banner {
+            height: 115px;
+            background: linear-gradient(135deg, #3730a3 0%, #4f46e5 40%, #7c3aed 70%, #ec4899 100%);
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .dc-badges-row {
+            position: absolute;
+            top: 12px;
+            right: 14px;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            padding: 5px 9px;
             display: flex;
             align-items: center;
-            gap: 20px;
-            margin-bottom: 24px;
+            gap: 8px;
+            z-index: 2;
         }
 
-        .discord-avatar-wrap {
-            position: relative;
-            width: 64px;
-            height: 64px;
-            flex-shrink: 0;
-        }
-
-        .discord-avatar-img {
-            width: 100%;
-            height: 100%;
-            border-radius: 20px;
-            background: rgba(88, 101, 242, 0.2);
+        .dc-badge-icon {
+            width: 18px;
+            height: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
-            color: var(--discord);
+            transition: transform 0.2s;
+            cursor: pointer;
         }
 
-        .discord-user-info h4 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #fff;
+        .dc-badge-icon:hover {
+            transform: scale(1.25);
         }
 
-        .discord-tag-pill {
+        .dc-card-content {
+            padding: 0 24px 24px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .dc-avatar-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: -50px;
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .dc-avatar-wrap {
+            position: relative;
+            width: 92px;
+            height: 92px;
+            border-radius: 50%;
+            background: #0f111c;
+            padding: 6px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+        }
+
+        .dc-avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+            background: #1e1f22;
+        }
+
+        .dc-status-indicator {
+            position: absolute;
+            bottom: 3px;
+            right: 3px;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #0f111c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dc-status-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #23a55a;
+            box-shadow: 0 0 10px rgba(35, 165, 90, 0.7);
+            transition: all 0.3s ease;
+        }
+
+        .dc-status-dot.online { background: #23a55a; box-shadow: 0 0 10px rgba(35, 165, 90, 0.7); }
+        .dc-status-dot.idle {
+            background: #f0b232;
+            box-shadow: 0 0 10px rgba(240, 178, 50, 0.7);
+            mask: radial-gradient(circle at 35% 35%, transparent 40%, black 41%);
+            -webkit-mask: radial-gradient(circle at 35% 35%, transparent 40%, black 41%);
+        }
+        .dc-status-dot.dnd {
+            background: #f23f43;
+            box-shadow: 0 0 10px rgba(242, 63, 67, 0.7);
+            position: relative;
+        }
+        .dc-status-dot.dnd::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 2.5px;
+            background: #fff;
+            border-radius: 2px;
+        }
+        .dc-status-dot.offline {
+            background: #80848e;
+            box-shadow: none;
+            mask: radial-gradient(circle at 50% 50%, transparent 40%, black 41%);
+            -webkit-mask: radial-gradient(circle at 50% 50%, transparent 40%, black 41%);
+        }
+
+        .dc-header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dc-live-pill {
+            font-size: 0.75rem;
             font-family: var(--font-mono);
-            font-size: 0.85rem;
-            color: #a5b4fc;
-            background: rgba(88, 101, 242, 0.15);
+            color: #23a55a;
+            background: rgba(35, 165, 90, 0.12);
+            border: 1px solid rgba(35, 165, 90, 0.3);
             padding: 4px 10px;
             border-radius: 8px;
-            display: inline-block;
-            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .discord-status-box {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 14px;
-            padding: 14px 18px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+        .dc-live-pill .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #23a55a;
+            animation: pulseDot 2s infinite;
         }
 
-        .discord-status-header {
-            font-size: 0.75rem;
+        .dc-user-header {
+            margin-bottom: 12px;
+        }
+
+        .dc-display-name {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.2;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dc-handle {
+            font-family: var(--font-mono);
+            font-size: 0.88rem;
+            color: #949ba4;
+            margin-top: 3px;
+        }
+
+        .dc-custom-status {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-size: 0.88rem;
+            color: #dbdee1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .dc-box-title {
+            font-size: 0.7rem;
+            font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-muted);
+            letter-spacing: 0.08em;
+            color: #949ba4;
             margin-bottom: 6px;
         }
 
-        .discord-status-content {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
+        .dc-about-box {
+            font-size: 0.88rem;
+            color: #dbdee1;
+            line-height: 1.5;
+            background: rgba(0, 0, 0, 0.22);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 10px 14px;
+            border-radius: 12px;
+            margin-bottom: 14px;
+        }
+
+        /* Activity Card (Playing Dota 2 / Spotify) */
+        .dc-activity-card {
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 14px;
+            padding: 14px;
             display: flex;
             align-items: center;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .dc-activity-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            object-fit: cover;
+            flex-shrink: 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dc-activity-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .dc-activity-type {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #818cf8;
+            margin-bottom: 2px;
+            letter-spacing: 0.05em;
+        }
+
+        .dc-activity-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .dc-activity-state {
+            font-size: 0.82rem;
+            color: #949ba4;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .dc-activity-timer {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: #23a55a;
+            margin-top: 2px;
+        }
+
+        .dc-actions-row {
+            display: flex;
             gap: 10px;
+            margin-top: auto;
         }
 
-        .discord-status-content i {
-            color: var(--primary);
-        }
-
-        /* Telegram Card */
-        .tg-glass-card {
-            padding: 32px;
-            background: linear-gradient(135deg, rgba(34, 158, 217, 0.08), rgba(15, 18, 30, 0.6));
-            border: 1px solid rgba(34, 158, 217, 0.25);
+        /* Matching Telegram Card */
+        .tg-profile-card {
+            background: rgba(17, 22, 33, 0.7);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid rgba(34, 158, 217, 0.28);
+            border-radius: 24px;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            transition: all 0.35s var(--ease-out-expo);
+            position: relative;
+            box-shadow: 0 14px 34px -10px rgba(0, 0, 0, 0.5);
         }
 
-        .tg-card-top {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 24px;
+        .tg-profile-card:hover {
+            border-color: rgba(34, 158, 217, 0.55);
+            box-shadow: 0 18px 45px -10px rgba(0, 0, 0, 0.7), 0 0 35px rgba(34, 158, 217, 0.25);
+            transform: translateY(-5px);
         }
 
-        .tg-avatar-img {
-            width: 64px;
-            height: 64px;
-            border-radius: 20px;
-            background: rgba(34, 158, 217, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            color: var(--telegram);
-            flex-shrink: 0;
-        }
-
-        .tg-user-info h4 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #fff;
-        }
-
-        .tg-tag-pill {
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
-            color: #7dd3fc;
-            background: rgba(34, 158, 217, 0.15);
-            padding: 4px 10px;
-            border-radius: 8px;
-            display: inline-block;
-            margin-top: 4px;
+        .tg-banner {
+            height: 115px;
+            background: linear-gradient(135deg, #0369a1 0%, #0284c7 40%, #229ED9 75%, #38bdf8 100%);
+            background-size: cover;
+            background-position: center;
+            position: relative;
         }
 
         /* ============================
@@ -1590,65 +1792,160 @@
 
         <div class="live-status-grid">
             
-            <!-- Discord Card with 1-Click Copy & Direct App Link -->
-            <div class="glass-card discord-glass-card reveal-item" onclick="copyDiscord(true); playSfx(600);">
-                <div>
-                    <div class="discord-card-top">
-                        <div class="discord-avatar-wrap">
-                            <div class="discord-avatar-img">
-                                <i class="fab fa-discord"></i>
-                            </div>
+            <!-- Real Discord User Profile Card -->
+            <div class="discord-profile-card reveal-item" id="discord-card">
+                <!-- Discord Banner -->
+                <div class="dc-banner" id="dc-banner">
+                    <!-- Badges -->
+                    <div class="dc-badges-row">
+                        <!-- Nitro Badge -->
+                        <div class="dc-badge-icon" title="Discord Nitro">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="#f47fff">
+                                <path d="M12 2.5a9.5 9.5 0 0 0-9.5 9.5c0 2.22.77 4.26 2.06 5.88l-1.35 3.37a.75.75 0 0 0 .97.97l3.37-1.35A9.45 9.45 0 0 0 12 21.5a9.5 9.5 0 0 0 9.5-9.5A9.5 9.5 0 0 0 12 2.5zm0 3a6.5 6.5 0 0 1 6.5 6.5c0 1.57-.56 3.01-1.5 4.14l-.24.29.98 2.45-2.45-.98-.29.24A6.47 6.47 0 0 1 12 18.5a6.5 6.5 0 0 1-6.5-6.5A6.5 6.5 0 0 1 12 5.5z"/>
+                            </svg>
                         </div>
-                        <div class="discord-user-info">
-                            <h4>Discord Profile</h4>
-                            <span class="discord-tag-pill">timon_deg</span>
+                        <!-- HypeSquad Bravery Badge -->
+                        <div class="dc-badge-icon" title="HypeSquad">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="#9b59b6">
+                                <path d="M12 2L3 9l3 13 6-3 6 3 3-13-9-7zm0 4.2l5.2 4-1.8 7.8-3.4-1.7-3.4 1.7-1.8-7.8 5.2-4z"/>
+                            </svg>
                         </div>
-                    </div>
-
-                    <div class="discord-status-box">
-                        <div class="discord-status-header">Статус активности</div>
-                        <div class="discord-status-content">
-                            <i class="fas fa-circle" style="color: var(--online); font-size: 0.65rem;"></i>
-                            <span>Готов к общению и совместным проектам</span>
+                        <!-- Active Developer Badge -->
+                        <div class="dc-badge-icon" title="Active Developer">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="#5865F2">
+                                <path d="M12 2a10 10 0 1 0 10 10A10.01 10.01 0 0 0 12 2zm1 14.5h-2v-2h2zm0-4h-2V7h2z"/>
+                            </svg>
                         </div>
                     </div>
                 </div>
 
-                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                    <button class="btn btn-glass" style="flex: 1; min-width: 140px; justify-content: center;" onclick="event.stopPropagation(); copyDiscord(false); playSfx(600);">
-                        <i class="far fa-copy"></i> Скопировать ник
-                    </button>
-                    <a href="https://discord.com/channels/@me" target="_blank" class="btn btn-glass" style="flex: 1; min-width: 140px; justify-content: center; text-decoration: none;" onclick="event.stopPropagation(); copyDiscord(false); playSfx(600);">
-                        <i class="fab fa-discord"></i> Открыть Discord
-                    </a>
+                <div class="dc-card-content">
+                    <!-- Avatar Row with Real Status Dot -->
+                    <div class="dc-avatar-row">
+                        <div class="dc-avatar-wrap">
+                            <img src="https://avatars.githubusercontent.com/u/318945136?v=4" 
+                                 alt="Discord Avatar" class="dc-avatar-img" id="dc-avatar-img">
+                            <div class="dc-status-indicator" title="Статус: В сети">
+                                <div class="dc-status-dot online" id="dc-status-dot"></div>
+                            </div>
+                        </div>
+                        <div class="dc-header-actions">
+                            <div class="dc-live-pill" id="dc-live-pill">
+                                <span class="dot"></span>
+                                <span id="dc-status-label">В сети</span>
+                            </div>
+                            <button class="btn-icon" style="width: 32px; height: 32px; font-size: 0.75rem;" onclick="promptDiscordId();" title="Привязать Discord ID для 100% live данных">
+                                <i class="fas fa-cog"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- User Info -->
+                    <div class="dc-user-header">
+                        <div class="dc-display-name">
+                            <span id="dc-display-name-text">damnwu</span>
+                        </div>
+                        <div class="dc-handle" id="dc-handle-text">@timon_deg</div>
+                    </div>
+
+                    <!-- Custom Status Bubble -->
+                    <div class="dc-custom-status" id="dc-custom-status">
+                        <i class="fas fa-gamepad"></i>
+                        <span>Mid or feed · ESP32 & Python dev</span>
+                    </div>
+
+                    <!-- About Me -->
+                    <div class="dc-box-title">О себе</div>
+                    <div class="dc-about-box" id="dc-about-box">
+                        Python-разработчик, увлекаюсь IoT на ESP32/Arduino и системным кодом. В свободное время играю в Dota 2 (Pos 2 Mid) и CS2.
+                    </div>
+
+                    <!-- Activity Box (Playing Dota 2 / Spotify) -->
+                    <div class="dc-box-title">Активность</div>
+                    <div class="dc-activity-card" id="dc-activity-box">
+                        <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/570/header.jpg" 
+                             alt="Dota 2" class="dc-activity-icon" id="dc-act-icon">
+                        <div class="dc-activity-details">
+                            <div class="dc-activity-type" id="dc-act-type">Играет в игру</div>
+                            <div class="dc-activity-title" id="dc-act-title">Dota 2</div>
+                            <div class="dc-activity-state" id="dc-act-state">Рейтинговый матч · Midlane</div>
+                            <div class="dc-activity-timer" id="dc-act-timer"><i class="far fa-clock"></i> 01:24:18 прошло</div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="dc-actions-row">
+                        <button class="btn btn-glass" style="flex: 1; justify-content: center; font-size: 0.88rem;" onclick="copyDiscord(false); playSfx(600);">
+                            <i class="far fa-copy"></i> Скопировать ник
+                        </button>
+                        <a href="https://discord.com/channels/@me" target="_blank" class="btn btn-glass" style="flex: 1; justify-content: center; text-decoration: none; font-size: 0.88rem;" onclick="copyDiscord(false); playSfx(600);">
+                            <i class="fab fa-discord"></i> Открыть Discord
+                        </a>
+                    </div>
                 </div>
             </div>
 
-            <!-- Telegram Card with Direct Chat -->
-            <div class="glass-card tg-glass-card reveal-item" onclick="window.open('https://t.me/damnwu0', '_blank'); playSfx(620);">
-                <div>
-                    <div class="tg-card-top">
-                        <div class="tg-avatar-img">
-                            <i class="fab fa-telegram-plane"></i>
-                        </div>
-                        <div class="tg-user-info">
-                            <h4>Telegram Messenger</h4>
-                            <span class="tg-tag-pill">@damnwu0</span>
-                        </div>
-                    </div>
-
-                    <div class="discord-status-box">
-                        <div class="discord-status-header">Канал & Связь</div>
-                        <div class="discord-status-content">
-                            <i class="fas fa-comment-dots"></i>
-                            <span>Самый быстрый способ связаться со мной</span>
-                        </div>
+            <!-- Matching Telegram Profile Card -->
+            <div class="tg-profile-card reveal-item" onclick="window.open('https://t.me/damnwu0', '_blank'); playSfx(620);">
+                <!-- Banner -->
+                <div class="tg-banner">
+                    <div class="dc-badges-row">
+                        <span style="font-size: 0.75rem; color: #fff; font-weight: 700; font-family: var(--font-mono);">TG</span>
                     </div>
                 </div>
 
-                <a href="https://t.me/damnwu0" target="_blank" class="btn btn-glass" style="width: 100%; justify-content: center; text-decoration: none;" onclick="event.stopPropagation(); playSfx(620);">
-                    <i class="fab fa-telegram"></i> Написать в Telegram
-                </a>
+                <div class="dc-card-content">
+                    <!-- Avatar Row -->
+                    <div class="dc-avatar-row">
+                        <div class="dc-avatar-wrap">
+                            <img src="https://avatars.githubusercontent.com/u/318945136?v=4" 
+                                 alt="Telegram Avatar" class="dc-avatar-img">
+                            <div class="dc-status-indicator" style="background: #0f141f;" title="Telegram">
+                                <i class="fab fa-telegram-plane" style="color: #229ED9; font-size: 0.85rem;"></i>
+                            </div>
+                        </div>
+                        <div class="dc-header-actions">
+                            <div class="dc-live-pill" style="color: #229ED9; background: rgba(34, 158, 217, 0.12); border-color: rgba(34, 158, 217, 0.3);">
+                                <span class="dot" style="background: #229ED9;"></span>
+                                <span>Онлайн</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- User Info -->
+                    <div class="dc-user-header">
+                        <div class="dc-display-name">
+                            <span>damnwu</span>
+                            <i class="fas fa-check-circle" style="color: #229ED9; font-size: 0.95rem;" title="Верифицирован"></i>
+                        </div>
+                        <div class="dc-handle" style="color: #38bdf8;">@damnwu0</div>
+                    </div>
+
+                    <!-- Bio -->
+                    <div class="dc-box-title">О себе в Telegram</div>
+                    <div class="dc-about-box" style="margin-bottom: 20px;">
+                        Основной мессенджер для быстрой связи. Доступен для обсуждения проектов, совместного кода или вопросов по железу и ESP32.
+                    </div>
+
+                    <div class="dc-box-title">Прямой чат</div>
+                    <div class="dc-activity-card" style="margin-bottom: 20px;">
+                        <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(34, 158, 217, 0.15); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #229ED9; flex-shrink: 0;">
+                            <i class="fab fa-telegram-plane"></i>
+                        </div>
+                        <div class="dc-activity-details">
+                            <div class="dc-activity-type" style="color: #38bdf8;">Мессенджер</div>
+                            <div class="dc-activity-title">Написать напрямую</div>
+                            <div class="dc-activity-state">t.me/damnwu0</div>
+                        </div>
+                    </div>
+
+                    <!-- Action Button -->
+                    <div class="dc-actions-row">
+                        <a href="https://t.me/damnwu0" target="_blank" class="btn btn-glass" style="width: 100%; justify-content: center; text-decoration: none;" onclick="event.stopPropagation(); playSfx(620);">
+                            <i class="fab fa-telegram"></i> Написать в Telegram
+                        </a>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -2339,6 +2636,119 @@
         }
     }
     syncSteamLive();
+
+    // --- C. Real-Time Discord Profile & Presence (Lanyard API) ---
+    let DISCORD_USER_ID = localStorage.getItem('damnwu_discord_id') || "";
+
+    function promptDiscordId() {
+        const current = DISCORD_USER_ID || "";
+        const entered = prompt("Введи свой 18-значный Discord User ID для живой синхронизации статуса и авы:\n\nКак получить ID:\n1. Настройки Discord -> Расширенные -> Включить «Режим разработчика»\n2. Правой кнопкой мыши по своему профилю -> Скопировать ID", current);
+        if (entered !== null) {
+            const clean = entered.trim();
+            if (clean) {
+                DISCORD_USER_ID = clean;
+                localStorage.setItem('damnwu_discord_id', clean);
+                showToast("Discord ID сохранен! Синхронизирую...");
+                syncDiscordPresence();
+            }
+        }
+    }
+
+    async function syncDiscordPresence() {
+        if (!DISCORD_USER_ID) return;
+
+        try {
+            const resp = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`);
+            if (!resp.ok) return;
+            const res = await resp.json();
+            if (!res.success || !res.data) return;
+
+            const d = res.data;
+            const user = d.discord_user;
+
+            // 1. Аватарка из Discord CDN
+            const avatarEl = document.getElementById('dc-avatar-img');
+            if (avatarEl && user.avatar) {
+                const isGif = user.avatar.startsWith('a_');
+                avatarEl.src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${isGif ? 'gif' : 'png'}?size=256`;
+            }
+
+            // 2. Баннер
+            const bannerEl = document.getElementById('dc-banner');
+            if (bannerEl && user.banner) {
+                bannerEl.style.backgroundImage = `url(https://cdn.discordapp.com/banners/${user.id}/${user.banner}.png?size=600)`;
+            }
+
+            // 3. Имя пользователя
+            const nameEl = document.getElementById('dc-display-name-text');
+            if (nameEl) nameEl.textContent = user.global_name || user.username;
+            const handleEl = document.getElementById('dc-handle-text');
+            if (handleEl) handleEl.textContent = `@${user.username}`;
+
+            // 4. Статус (Online, Idle, DND, Offline)
+            const dot = document.getElementById('dc-status-dot');
+            const statusLabel = document.getElementById('dc-status-label');
+            if (dot) {
+                dot.className = `dc-status-dot ${d.discord_status}`;
+            }
+            if (statusLabel) {
+                const map = {
+                    online: 'В сети',
+                    idle: 'Не активен',
+                    dnd: 'Не беспокоить',
+                    offline: 'Не в сети'
+                };
+                statusLabel.textContent = map[d.discord_status] || 'В сети';
+            }
+
+            // 5. Кастомный статус
+            const customStatusEl = document.getElementById('dc-custom-status');
+            const custom = d.activities ? d.activities.find(a => a.type === 4) : null;
+            if (customStatusEl && custom) {
+                const emoji = custom.emoji ? (custom.emoji.name + ' ') : '💬 ';
+                customStatusEl.innerHTML = `<span>${emoji}${custom.state || ''}</span>`;
+            }
+
+            // 6. Активность (Игра или Spotify)
+            const actBox = document.getElementById('dc-activity-box');
+            if (actBox) {
+                if (d.listening_to_spotify && d.spotify) {
+                    actBox.innerHTML = `
+                        <img src="${d.spotify.album_art_url}" class="dc-activity-icon" alt="Spotify" style="border-radius: 8px;">
+                        <div class="dc-activity-details">
+                            <div class="dc-activity-type" style="color: #1db954;"><i class="fab fa-spotify"></i> Слушает Spotify</div>
+                            <div class="dc-activity-title">${d.spotify.song}</div>
+                            <div class="dc-activity-state">${d.spotify.artist}</div>
+                            <div class="dc-activity-timer" style="color: #1db954;"><i class="fas fa-play"></i> Сейчас играет</div>
+                        </div>
+                    `;
+                } else if (d.activities && d.activities.length > 0) {
+                    const game = d.activities.find(a => a.type === 0);
+                    if (game) {
+                        let imgUrl = 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/570/header.jpg';
+                        if (game.assets && game.assets.large_image) {
+                            imgUrl = game.assets.large_image.startsWith('mp:external')
+                                ? 'https://' + game.assets.large_image.replace(/mp:external\/[^\/]+\//, '')
+                                : `https://cdn.discordapp.com/app-assets/${game.application_id}/${game.assets.large_image}.png`;
+                        }
+                        actBox.innerHTML = `
+                            <img src="${imgUrl}" class="dc-activity-icon" alt="${game.name}">
+                            <div class="dc-activity-details">
+                                <div class="dc-activity-type"><i class="fas fa-gamepad"></i> Играет в игру</div>
+                                <div class="dc-activity-title">${game.name}</div>
+                                <div class="dc-activity-state">${game.details || game.state || 'В игре'}</div>
+                                <div class="dc-activity-timer"><i class="far fa-clock"></i> Активен сейчас</div>
+                            </div>
+                        `;
+                    }
+                }
+            }
+
+        } catch (e) {
+            console.log('Lanyard sync:', e);
+        }
+    }
+    syncDiscordPresence();
     </script>
 </body>
 </html>
