@@ -1760,7 +1760,7 @@
                 <a href="https://steamcommunity.com/id/timurka_yo/" target="_blank" class="social-pill stm" onclick="playSfx(380)">
                     <i class="fab fa-steam"></i> Steam
                 </a>
-                <a href="https://discord.com/users/896804605151805521" target="_blank" onclick="copyDiscord(false); playSfx(480);" class="social-pill dc" title="Открыть профиль Discord">
+                <a href="https://discord.com/users/896804605151805521" target="_blank" onclick="playSfx(480);" class="social-pill dc" title="Открыть профиль Discord">
                     <i class="fab fa-discord"></i> timon_deg
                 </a>
                 <a href="https://t.me/damnwu0" target="_blank" class="social-pill tg" onclick="playSfx(520)">
@@ -1931,9 +1931,6 @@
                                 <span class="dot" style="background: #f23f43;"></span>
                                 <span id="dc-status-label">Не беспокоить</span>
                             </div>
-                            <button class="btn-icon" style="width: 32px; height: 32px; font-size: 0.75rem;" onclick="promptDiscordId();" title="Настроить Discord ID">
-                                <i class="fas fa-cog"></i>
-                            </button>
                         </div>
                     </div>
 
@@ -1983,10 +1980,10 @@
 
                     <!-- Action Buttons -->
                     <div class="dc-actions-row">
-                        <button class="btn btn-glass" style="flex: 1; justify-content: center; font-size: 0.88rem;" onclick="copyDiscord(false); playSfx(600);">
+                        <button class="btn btn-glass" style="flex: 1; justify-content: center; font-size: 0.88rem;" onclick="copyDiscord(); playSfx(600);">
                             <i class="far fa-copy"></i> Скопировать ник
                         </button>
-                        <a href="https://discord.com/users/896804605151805521" target="_blank" class="btn btn-glass" style="flex: 1; justify-content: center; text-decoration: none; font-size: 0.88rem;" onclick="copyDiscord(false); playSfx(600);">
+                        <a href="https://discord.com/users/896804605151805521" target="_blank" class="btn btn-glass" style="flex: 1; justify-content: center; text-decoration: none; font-size: 0.88rem;" onclick="playSfx(600);">
                             <i class="fab fa-discord"></i> Профиль Discord
                         </a>
                     </div>
@@ -1994,7 +1991,7 @@
             </div>
 
             <!-- Matching Telegram Profile Card -->
-            <div class="tg-profile-card reveal-item" onclick="window.open('https://t.me/damnwu0', '_blank'); playSfx(620);">
+            <div class="tg-profile-card reveal-item">
                 <!-- Banner -->
                 <div class="tg-banner">
                     <div class="dc-badges-row">
@@ -2041,10 +2038,13 @@
                         </div>
                     </div>
 
-                    <!-- Action Button -->
+                    <!-- Action Buttons -->
                     <div class="dc-actions-row">
-                        <a href="https://t.me/damnwu0" target="_blank" class="btn btn-glass" style="width: 100%; justify-content: center; text-decoration: none;" onclick="event.stopPropagation(); playSfx(620);">
-                            <i class="fab fa-telegram"></i> Написать в Telegram
+                        <button class="btn btn-glass" style="flex: 1; justify-content: center; font-size: 0.88rem;" onclick="copyTelegram(); playSfx(600);">
+                            <i class="far fa-copy"></i> Скопировать тег
+                        </button>
+                        <a href="https://t.me/damnwu0" target="_blank" class="btn btn-glass" style="flex: 1; justify-content: center; text-decoration: none; font-size: 0.88rem;" onclick="playSfx(620);">
+                            <i class="fab fa-telegram"></i> Написать в TG
                         </a>
                     </div>
                 </div>
@@ -2432,34 +2432,23 @@
         }, 2800);
     }
 
-    function copyDiscord(openApp = false) {
-        const username = "timon_deg";
-        
+    function copyTextToClipboard(text, message) {
         function onCopied() {
-            if (openApp) {
-                showToast(`Ник "${username}" скопирован! Открываю Discord...`);
-                setTimeout(() => {
-                    window.open('https://discord.com/channels/@me', '_blank');
-                }, 400);
-            } else {
-                showToast(`Discord ник "${username}" скопирован в буфер!`);
-            }
+            showToast(message);
         }
 
-        // 1. Попытка через современный Clipboard API (работает на HTTPS)
         if (navigator.clipboard && window.isSecureContext) {
-            navigator.clipboard.writeText(username).then(onCopied).catch(() => {
-                fallbackCopy(username);
+            navigator.clipboard.writeText(text).then(onCopied).catch(() => {
+                fallbackCopy(text);
             });
         } else {
-            // 2. Универсальный fallback через document.execCommand (работает локально file:// и без HTTPS)
-            fallbackCopy(username);
+            fallbackCopy(text);
         }
 
-        function fallbackCopy(text) {
+        function fallbackCopy(str) {
             try {
                 const textarea = document.createElement("textarea");
-                textarea.value = text;
+                textarea.value = str;
                 textarea.style.position = "fixed";
                 textarea.style.left = "-9999px";
                 textarea.style.top = "-9999px";
@@ -2472,14 +2461,20 @@
                 if (success) {
                     onCopied();
                 } else {
-                    showToast(`Discord ник: ${text}`);
-                    if (openApp) window.open('https://discord.com/channels/@me', '_blank');
+                    showToast(`Скопировано: ${str}`);
                 }
             } catch (err) {
-                showToast(`Discord ник: ${text}`);
-                if (openApp) window.open('https://discord.com/channels/@me', '_blank');
+                showToast(`Скопировано: ${str}`);
             }
         }
+    }
+
+    function copyDiscord() {
+        copyTextToClipboard("timon_deg", 'Discord ник "timon_deg" скопирован в буфер!');
+    }
+
+    function copyTelegram() {
+        copyTextToClipboard("@damnwu0", 'Telegram тег "@damnwu0" скопирован в буфер!');
     }
 
     /* ========================================================
@@ -2825,22 +2820,7 @@
     syncSteamLive();
 
     // --- C. Real-Time Discord Profile & Presence (Lanyard API) ---
-    let DISCORD_USER_ID = localStorage.getItem('damnwu_discord_id') || "896804605151805521";
-
-    function promptDiscordId() {
-        const current = DISCORD_USER_ID || "896804605151805521";
-        const entered = prompt("Введи свой Discord User ID для синхронизации:", current);
-        if (entered !== null) {
-            const clean = entered.trim();
-            if (clean) {
-                DISCORD_USER_ID = clean;
-                localStorage.setItem('damnwu_discord_id', clean);
-                showToast("Discord ID сохранен! Синхронизирую...");
-                syncDiscordPresence();
-            }
-        }
-        renderGamesCollection();
-    }
+    const DISCORD_USER_ID = "896804605151805521";
 
     function applyLanyardData(d) {
         if (!d) return;
