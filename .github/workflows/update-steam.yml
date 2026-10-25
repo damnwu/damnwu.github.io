@@ -1,4 +1,4 @@
-name: Auto Update Steam Activity
+name: Auto Update Steam & Socials Activity
 
 on:
   schedule:
@@ -7,11 +7,69 @@ on:
   workflow_dispatch: # Возможность запустить вручную кнопкой в GitHub Actions
 
 jobs:
-  update-steam-stats:
+  update-activity:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Fetch Live Telegram & Discord Data
+        run: |
+          python3 -c "
+          import urllib.request, json, os, re
+
+          profiles = {}
+          if os.path.exists('profiles.json'):
+              try:
+                  with open('profiles.json', 'r', encoding='utf-8') as f:
+                      profiles = json.load(f)
+              except:
+                  pass
+
+          # 1. Scrape Telegram profile (t.me/damnwu0)
+          try:
+              req = urllib.request.Request('https://t.me/damnwu0', headers={'User-Agent': 'Mozilla/5.0'})
+              with urllib.request.urlopen(req, timeout=10) as resp:
+                  html = resp.read().decode('utf-8', errors='ignore')
+
+                  title_match = re.search(r'<meta property=\"og:title\" content=\"([^\"]+)\">', html)
+                  image_match = re.search(r'<meta property=\"og:image\" content=\"([^\"]+)\">', html)
+                  desc_match = re.search(r'<div class=\"tgme_page_description\"[^>]*>(.*?)</div>', html, re.DOTALL)
+
+                  if 'telegram' not in profiles:
+                      profiles['telegram'] = {}
+
+                  if title_match:
+                      profiles['telegram']['name'] = title_match.group(1).strip()
+                  if image_match:
+                      profiles['telegram']['avatar'] = image_match.group(1).strip()
+                  if desc_match:
+                      clean_desc = re.sub(r'<[^>]+>', '', desc_match.group(1)).strip()
+                      if clean_desc:
+                          profiles['telegram']['bio'] = clean_desc
+          except Exception as e:
+              print(f'Telegram update error: {e}')
+
+          # 2. Check Lanyard for Discord KV & bio/banner
+          try:
+              req = urllib.request.Request('https://api.lanyard.rest/v1/users/896804605151805521', headers={'User-Agent': 'Mozilla/5.0'})
+              with urllib.request.urlopen(req, timeout=10) as resp:
+                  data = json.loads(resp.read().decode('utf-8')).get('data', {})
+                  if 'discord' not in profiles:
+                      profiles['discord'] = {}
+
+                  kv = data.get('kv', {})
+                  if kv.get('bio'):
+                      profiles['discord']['bio'] = kv['bio']
+                  if kv.get('banner'):
+                      profiles['discord']['banner'] = kv['banner']
+          except Exception as e:
+              print(f'Discord update error: {e}')
+
+          with open('profiles.json', 'w', encoding='utf-8') as f:
+              json.dump(profiles, f, indent=2, ensure_ascii=False)
+          print('profiles.json успешно синхронизирован!')
+          "
 
       - name: Fetch Live Steam Data
         run: |
@@ -22,7 +80,7 @@ jobs:
           steam_id = '76561199488101705'
 
           if not api_key:
-              print('STEAM_API_KEY не задан в Secrets. Пропуск обновления.')
+              print('STEAM_API_KEY не задан в Secrets. Пропуск обновления Steam.')
               exit(0)
 
           url = f'https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key={api_key}&steamid={steam_id}&format=json'
@@ -46,5 +104,5 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add steam-data.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update Steam activity [skip ci]" && git push)
+          git add steam-data.json profiles.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update Steam and profiles data [skip ci]" && git push)

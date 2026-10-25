@@ -1,0 +1,12 @@
+{
+  "discord": {
+    "bio": "Python dev, low-level C/C++, IoT на ESP32/Arduino. В Steam играю в Dota 2 (Pos 2 Mid).",
+    "banner": ""
+  },
+  "telegram": {
+    "name": "𝒚𝒐 » 𝒅𝒂𝒎𝒏𝒘𝒖",
+    "username": "damnwu0",
+    "avatar": "https://cdn4.telesco.pe/file/s4yHA90HR9fd-TtRpWCfBu_0-dwAAz8_HSuLVYZm2O41f6FPHxnmnNd1TJ2zDd_-gnII0UnRDL8v78s2XPpY1dnZyhOFdhef3f5wFHEEPH66_a15lLTMjrH_awtqb9FW9Byd5wBNSVBaiGJ-x9unZoo7Sl2mRxD8W_c9Pv2ax0WKBgOgZoUt7aqEA0T6hpOQ7rVBfHj-eJ4rI2ND_fLuKdSBJCui6K-hmeU3pGnb-N6GWY_AoEWlqaH2WLlqGAy7Yy5TVMjl-rvAe92Q4M_6aOikYVoA5XmqcbF8PXtI7hI4v6ntO2OUSdit3AYqmNXNDKmJFcxZv6aw0L5ho904Kg.jpg",
+    "bio": "Основной мессенджер для быстрой связи. Доступен для обсуждения проектов, совместного кода или вопросов по железу и ESP32."
+  }
+}
