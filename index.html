@@ -900,11 +900,47 @@
         }
 
         .dc-banner {
-            height: 115px;
-            background: linear-gradient(135deg, #3730a3 0%, #4f46e5 40%, #7c3aed 70%, #ec4899 100%);
+            height: 125px;
+            background: linear-gradient(135deg, #a894c2 0%, #bca7ce 45%, #9f8bbd 80%, #876f9f 100%);
             background-size: cover;
             background-position: center;
             position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Mystic Rose Petals Theme (Moon & Sparkles) */
+        .dc-banner::before {
+            content: '🌙';
+            position: absolute;
+            right: 18px;
+            bottom: 12px;
+            font-size: 26px;
+            opacity: 0.9;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
+            animation: moonFloat 4s ease-in-out infinite alternate;
+            z-index: 1;
+        }
+
+        .dc-banner::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: 
+                radial-gradient(circle at 18% 28%, rgba(255, 255, 255, 0.9) 1px, transparent 1px),
+                radial-gradient(circle at 65% 22%, rgba(255, 255, 255, 0.9) 1.5px, transparent 1.5px),
+                radial-gradient(circle at 40% 60%, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
+                radial-gradient(circle at 82% 70%, rgba(255, 255, 255, 0.95) 1.5px, transparent 1.5px),
+                radial-gradient(circle at 30% 85%, rgba(255, 255, 255, 0.8) 1px, transparent 1px);
+            background-size: 100% 100%;
+            opacity: 0.75;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes moonFloat {
+            0% { transform: translateY(0) scale(0.96); opacity: 0.75; }
+            100% { transform: translateY(-4px) scale(1.04); opacity: 1; }
         }
 
         .dc-badges-row {
@@ -934,6 +970,26 @@
 
         .dc-badge-icon:hover {
             transform: scale(1.25);
+        }
+
+        .dc-games-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .dc-game-thumb {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: transform 0.2s;
+        }
+
+        .dc-game-thumb:hover {
+            transform: scale(1.15);
         }
 
         .dc-card-content {
@@ -1868,21 +1924,37 @@
                     <div class="dc-user-header">
                         <div class="dc-display-name">
                             <span id="dc-display-name-text">damnwu</span>
-                            <span class="dc-guild-tag" id="dc-guild-tag" title="Клан MEOW">MEOW</span>
+                            <span class="dc-guild-tag" id="dc-guild-tag" title="Клан MEOW">🩵 MEOW</span>
                         </div>
-                        <div class="dc-handle" id="dc-handle-text">@timon_deg</div>
+                        <div class="dc-handle" id="dc-handle-text">timon_deg • timur</div>
+                        <!-- Discord Profile Badges under handle -->
+                        <div style="display: flex; gap: 6px; margin-top: 8px; font-size: 1rem;">
+                            <span title="Gamer">🎮</span>
+                            <span title="Developer">🖥️</span>
+                            <span title="Combat / Quest">⚔️</span>
+                            <span title="Nitro">🟣</span>
+                            <span title="Server Booster">💎</span>
+                        </div>
                     </div>
 
                     <!-- Custom Status Bubble -->
                     <div class="dc-custom-status" id="dc-custom-status">
-                        <i class="fas fa-gamepad"></i>
-                        <span>Mid or feed · ESP32 & Python dev</span>
+                        <i class="fas fa-comment-dots"></i>
+                        <span>О чём думаете?</span>
                     </div>
 
                     <!-- About Me -->
                     <div class="dc-box-title">О себе</div>
-                    <div class="dc-about-box" id="dc-about-box">
-                        Python-разработчик, увлекаюсь IoT на ESP32/Arduino и системным кодом. В свободное время играю в Dota 2 (Pos 2 Mid) и CS2.
+                    <div class="dc-about-box" id="dc-about-box" style="font-weight: 500; font-size: 0.95rem;">
+                        yo
+                    </div>
+
+                    <!-- Games Collection -->
+                    <div class="dc-box-title">Коллекция игр</div>
+                    <div class="dc-games-row" style="margin-bottom: 14px;">
+                        <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/570/header.jpg" class="dc-game-thumb" alt="Dota 2" title="Dota 2">
+                        <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/730/header.jpg" class="dc-game-thumb" alt="Counter-Strike 2" title="Counter-Strike 2">
+                        <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3241660/header.jpg" class="dc-game-thumb" alt="R.E.P.O." title="R.E.P.O.">
                     </div>
 
                     <!-- Activity Box (Playing Dota 2 / Spotify) -->
@@ -2722,11 +2794,11 @@
         const nameEl = document.getElementById('dc-display-name-text');
         if (nameEl) nameEl.textContent = user.global_name || user.username;
         const handleEl = document.getElementById('dc-handle-text');
-        if (handleEl) handleEl.textContent = `@${user.username}`;
+        if (handleEl) handleEl.textContent = `${user.username} • timur`;
         const guildTagEl = document.getElementById('dc-guild-tag');
         if (guildTagEl) {
             if (user.primary_guild && user.primary_guild.tag) {
-                guildTagEl.textContent = user.primary_guild.tag;
+                guildTagEl.textContent = `🩵 ${user.primary_guild.tag}`;
                 guildTagEl.style.display = 'inline-block';
             } else {
                 guildTagEl.style.display = 'none';
@@ -2770,7 +2842,7 @@
                 customStatusEl.innerHTML = `<i class="fas fa-quote-left" style="font-size:0.75rem;"></i> <span>${emoji}${custom.state || ''}</span>`;
                 customStatusEl.style.display = 'flex';
             } else {
-                customStatusEl.innerHTML = `<i class="fas fa-gamepad"></i> <span>Mid or feed · ESP32 & Python dev</span>`;
+                customStatusEl.innerHTML = `<i class="fas fa-comment-dots"></i> <span>О чём думаете?</span>`;
             }
         }
 
@@ -2807,22 +2879,36 @@
                     `;
                 }
             } else {
-                // Если сейчас игр нет, показываем статус активности клиента
-                let clientText = 'В сети';
-                if (d.active_on_discord_desktop) clientText = 'Активен через Discord Desktop';
-                else if (d.active_on_discord_mobile) clientText = 'Активен через Discord Mobile';
-                else if (d.active_on_discord_web) clientText = 'Активен через Discord Web';
+                // Если нет игр: проверяем, оффлайн ли пользователь
+                if (currentStatus === 'offline') {
+                    actBox.innerHTML = `
+                        <div style="width: 50px; height: 50px; border-radius: 12px; background: rgba(255, 255, 255, 0.05); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #80848e; flex-shrink: 0;">
+                            <i class="fas fa-moon"></i>
+                        </div>
+                        <div class="dc-activity-details">
+                            <div class="dc-activity-type" style="color: #80848e;">Оффлайн</div>
+                            <div class="dc-activity-title" style="color: #b5bac1;">Не в сети</div>
+                            <div class="dc-activity-state">Сейчас не в сети · Для связи пишите в Telegram</div>
+                        </div>
+                    `;
+                } else {
+                    let clientText = 'В сети';
+                    if (d.active_on_discord_desktop) clientText = 'Активен через Desktop';
+                    else if (d.active_on_discord_mobile) clientText = 'Активен через Mobile';
+                    else if (d.active_on_discord_web) clientText = 'Активен через Web';
+                    else if (currentStatus === 'dnd') clientText = 'Не беспокоить';
 
-                actBox.innerHTML = `
-                    <div style="width: 50px; height: 50px; border-radius: 12px; background: rgba(88, 101, 242, 0.15); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #5865F2; flex-shrink: 0;">
-                        <i class="fab fa-discord"></i>
-                    </div>
-                    <div class="dc-activity-details">
-                        <div class="dc-activity-type">Клиент Discord</div>
-                        <div class="dc-activity-title">${clientText}</div>
-                        <div class="dc-activity-state">Готов к общению и совместному коду</div>
-                    </div>
-                `;
+                    actBox.innerHTML = `
+                        <div style="width: 50px; height: 50px; border-radius: 12px; background: rgba(88, 101, 242, 0.15); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #5865F2; flex-shrink: 0;">
+                            <i class="fab fa-discord"></i>
+                        </div>
+                        <div class="dc-activity-details">
+                            <div class="dc-activity-type">Клиент Discord</div>
+                            <div class="dc-activity-title">${clientText}</div>
+                            <div class="dc-activity-state">Готов к общению и совместному коду</div>
+                        </div>
+                    `;
+                }
             }
         }
     }
