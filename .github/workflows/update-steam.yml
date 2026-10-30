@@ -6,12 +6,20 @@ on:
     - cron: '0 */6 * * *'
   workflow_dispatch: # Возможность запустить вручную кнопкой в GitHub Actions
 
+# Разрешение для github-actions[bot] на запись (push) в репозиторий
+permissions:
+  contents: write
+
 jobs:
   update-activity:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Fetch Live Telegram & Discord Data
         run: |
@@ -105,4 +113,9 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add steam-data.json profiles.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update Steam and profiles data [skip ci]" && git push)
+          if ! git diff --staged --quiet; then
+            git commit -m "Auto-update Steam and profiles data [skip ci]"
+            git push origin main
+          else
+            echo "Нет изменений для коммита."
+          fi

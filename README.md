@@ -21,7 +21,8 @@ Valve не разрешает браузерам делать прямые за�
   1. Получи бесплатный ключ Steam Web API на странице: [steamcommunity.com/dev/apikey](https://steamcommunity.com/dev/apikey) (в поле домена укажи `damnwu.github.io`).
   2. В твоем репозитории на GitHub перейди в: **Settings** -> **Secrets and variables** -> **Actions** -> **New repository secret**.
   3. Имя секрета: `STEAM_API_KEY`, значение: твой полученный ключ.
-  4. Всё! Теперь каждые 6 часов часы в Dota 2 и CS2 на сайте будут обновляться сами.
+  4. **Важно (права на запись):** Перейди в **Settings** -> **Actions** -> **General** -> прокрути вниз до **Workflow permissions** -> выбери **Read and write permissions** и нажми кнопку **Save** (это позволит GitHub Actions коммитить обновления данных в репозиторий).
+  5. Всё! Теперь каждые 6 часов часы в Dota 2 и CS2 на сайте будут обновляться сами.
 
 ---
 
