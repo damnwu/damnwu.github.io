@@ -4,10 +4,10 @@
     {
       "appid": 570,
       "name": "Dota 2",
-      "playtime_2weeks": 1133,
-      "playtime_forever": 31262,
+      "playtime_2weeks": 1089,
+      "playtime_forever": 31368,
       "img_icon_url": "48eb825bb93787945065b460bdc109e395384ebf",
-      "playtime_windows_forever": 31262,
+      "playtime_windows_forever": 31368,
       "playtime_mac_forever": 0,
       "playtime_linux_forever": 0,
       "playtime_deck_forever": 0
@@ -15,7 +15,7 @@
     {
       "appid": 730,
       "name": "Counter-Strike 2",
-      "playtime_2weeks": 127,
+      "playtime_2weeks": 101,
       "playtime_forever": 2622,
       "img_icon_url": "8dbc71957312bbd3baea65848b545be9eae2a355",
       "playtime_windows_forever": 2622,
