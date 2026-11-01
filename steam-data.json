@@ -4,10 +4,10 @@
     {
       "appid": 570,
       "name": "Dota 2",
-      "playtime_2weeks": 775,
-      "playtime_forever": 31517,
+      "playtime_2weeks": 889,
+      "playtime_forever": 31631,
       "img_icon_url": "48eb825bb93787945065b460bdc109e395384ebf",
-      "playtime_windows_forever": 31517,
+      "playtime_windows_forever": 31631,
       "playtime_mac_forever": 0,
       "playtime_linux_forever": 0,
       "playtime_deck_forever": 0
@@ -35,23 +35,23 @@
       "playtime_deck_forever": 0
     },
     {
-      "appid": 3241660,
-      "name": "R.E.P.O.",
-      "playtime_2weeks": 50,
-      "playtime_forever": 140,
-      "img_icon_url": "b8bf4770408fc369e15cebd42e0026a27b67aaa8",
-      "playtime_windows_forever": 140,
-      "playtime_mac_forever": 0,
-      "playtime_linux_forever": 0,
-      "playtime_deck_forever": 0
-    },
-    {
       "appid": 239140,
       "name": "Dying Light",
       "playtime_2weeks": 32,
       "playtime_forever": 273,
       "img_icon_url": "d575b4ba3480fe20aaeda8e8f498c3e47033069d",
       "playtime_windows_forever": 273,
+      "playtime_mac_forever": 0,
+      "playtime_linux_forever": 0,
+      "playtime_deck_forever": 0
+    },
+    {
+      "appid": 3241660,
+      "name": "R.E.P.O.",
+      "playtime_2weeks": 2,
+      "playtime_forever": 140,
+      "img_icon_url": "b8bf4770408fc369e15cebd42e0026a27b67aaa8",
+      "playtime_windows_forever": 140,
       "playtime_mac_forever": 0,
       "playtime_linux_forever": 0,
       "playtime_deck_forever": 0
