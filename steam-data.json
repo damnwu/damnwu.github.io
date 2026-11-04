@@ -24,23 +24,23 @@
       "playtime_deck_forever": 0
     },
     {
-      "appid": 730,
-      "name": "Counter-Strike 2",
-      "playtime_2weeks": 91,
-      "playtime_forever": 2622,
-      "img_icon_url": "8dbc71957312bbd3baea65848b545be9eae2a355",
-      "playtime_windows_forever": 2622,
-      "playtime_mac_forever": 0,
-      "playtime_linux_forever": 0,
-      "playtime_deck_forever": 0
-    },
-    {
       "appid": 365670,
       "name": "Blender",
       "playtime_2weeks": 67,
       "playtime_forever": 207,
       "img_icon_url": "48733cd333eea6e40711a1b9c6dde32ffe363ced",
       "playtime_windows_forever": 207,
+      "playtime_mac_forever": 0,
+      "playtime_linux_forever": 0,
+      "playtime_deck_forever": 0
+    },
+    {
+      "appid": 730,
+      "name": "Counter-Strike 2",
+      "playtime_2weeks": 36,
+      "playtime_forever": 2622,
+      "img_icon_url": "8dbc71957312bbd3baea65848b545be9eae2a355",
+      "playtime_windows_forever": 2622,
       "playtime_mac_forever": 0,
       "playtime_linux_forever": 0,
       "playtime_deck_forever": 0
