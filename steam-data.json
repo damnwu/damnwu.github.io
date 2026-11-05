@@ -4,10 +4,10 @@
     {
       "appid": 570,
       "name": "Dota 2",
-      "playtime_2weeks": 838,
-      "playtime_forever": 31764,
+      "playtime_2weeks": 863,
+      "playtime_forever": 31830,
       "img_icon_url": "48eb825bb93787945065b460bdc109e395384ebf",
-      "playtime_windows_forever": 31764,
+      "playtime_windows_forever": 31830,
       "playtime_mac_forever": 0,
       "playtime_linux_forever": 0,
       "playtime_deck_forever": 0
@@ -35,23 +35,23 @@
       "playtime_deck_forever": 0
     },
     {
-      "appid": 730,
-      "name": "Counter-Strike 2",
-      "playtime_2weeks": 36,
-      "playtime_forever": 2622,
-      "img_icon_url": "8dbc71957312bbd3baea65848b545be9eae2a355",
-      "playtime_windows_forever": 2622,
-      "playtime_mac_forever": 0,
-      "playtime_linux_forever": 0,
-      "playtime_deck_forever": 0
-    },
-    {
       "appid": 239140,
       "name": "Dying Light",
       "playtime_2weeks": 32,
       "playtime_forever": 273,
       "img_icon_url": "d575b4ba3480fe20aaeda8e8f498c3e47033069d",
       "playtime_windows_forever": 273,
+      "playtime_mac_forever": 0,
+      "playtime_linux_forever": 0,
+      "playtime_deck_forever": 0
+    },
+    {
+      "appid": 730,
+      "name": "Counter-Strike 2",
+      "playtime_2weeks": 29,
+      "playtime_forever": 2622,
+      "img_icon_url": "8dbc71957312bbd3baea65848b545be9eae2a355",
+      "playtime_windows_forever": 2622,
       "playtime_mac_forever": 0,
       "playtime_linux_forever": 0,
       "playtime_deck_forever": 0
