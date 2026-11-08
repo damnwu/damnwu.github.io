@@ -1,10 +1,10 @@
 {
-  "total_count": 6,
+  "total_count": 5,
   "games": [
     {
       "appid": 570,
       "name": "Dota 2",
-      "playtime_2weeks": 611,
+      "playtime_2weeks": 602,
       "playtime_forever": 31830,
       "img_icon_url": "48eb825bb93787945065b460bdc109e395384ebf",
       "playtime_windows_forever": 31830,
@@ -52,17 +52,6 @@
       "playtime_forever": 2622,
       "img_icon_url": "8dbc71957312bbd3baea65848b545be9eae2a355",
       "playtime_windows_forever": 2622,
-      "playtime_mac_forever": 0,
-      "playtime_linux_forever": 0,
-      "playtime_deck_forever": 0
-    },
-    {
-      "appid": 3241660,
-      "name": "R.E.P.O.",
-      "playtime_2weeks": 2,
-      "playtime_forever": 140,
-      "img_icon_url": "b8bf4770408fc369e15cebd42e0026a27b67aaa8",
-      "playtime_windows_forever": 140,
       "playtime_mac_forever": 0,
       "playtime_linux_forever": 0,
       "playtime_deck_forever": 0
