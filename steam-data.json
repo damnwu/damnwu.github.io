@@ -1,13 +1,13 @@
 {
-  "total_count": 3,
+  "total_count": 4,
   "games": [
     {
       "appid": 570,
       "name": "Dota 2",
-      "playtime_2weeks": 683,
-      "playtime_forever": 31946,
+      "playtime_2weeks": 594,
+      "playtime_forever": 31947,
       "img_icon_url": "48eb825bb93787945065b460bdc109e395384ebf",
-      "playtime_windows_forever": 31946,
+      "playtime_windows_forever": 31947,
       "playtime_mac_forever": 0,
       "playtime_linux_forever": 0,
       "playtime_deck_forever": 0
@@ -30,6 +30,17 @@
       "playtime_forever": 304,
       "img_icon_url": "d575b4ba3480fe20aaeda8e8f498c3e47033069d",
       "playtime_windows_forever": 304,
+      "playtime_mac_forever": 0,
+      "playtime_linux_forever": 0,
+      "playtime_deck_forever": 0
+    },
+    {
+      "appid": 1368950,
+      "name": "VTuber Maker",
+      "playtime_2weeks": 5,
+      "playtime_forever": 5,
+      "img_icon_url": "bd4a540aac0965d7ee4cc4137726215e84e67e9b",
+      "playtime_windows_forever": 5,
       "playtime_mac_forever": 0,
       "playtime_linux_forever": 0,
       "playtime_deck_forever": 0
