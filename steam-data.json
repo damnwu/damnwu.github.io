@@ -13,23 +13,23 @@
       "playtime_deck_forever": 0
     },
     {
-      "appid": 239140,
-      "name": "Dying Light",
-      "playtime_2weeks": 34,
-      "playtime_forever": 307,
-      "img_icon_url": "d575b4ba3480fe20aaeda8e8f498c3e47033069d",
-      "playtime_windows_forever": 307,
-      "playtime_mac_forever": 0,
-      "playtime_linux_forever": 0,
-      "playtime_deck_forever": 0
-    },
-    {
       "appid": 365670,
       "name": "Blender",
       "playtime_2weeks": 30,
       "playtime_forever": 237,
       "img_icon_url": "48733cd333eea6e40711a1b9c6dde32ffe363ced",
       "playtime_windows_forever": 237,
+      "playtime_mac_forever": 0,
+      "playtime_linux_forever": 0,
+      "playtime_deck_forever": 0
+    },
+    {
+      "appid": 239140,
+      "name": "Dying Light",
+      "playtime_2weeks": 16,
+      "playtime_forever": 320,
+      "img_icon_url": "d575b4ba3480fe20aaeda8e8f498c3e47033069d",
+      "playtime_windows_forever": 320,
       "playtime_mac_forever": 0,
       "playtime_linux_forever": 0,
       "playtime_deck_forever": 0
